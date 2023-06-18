@@ -1,0 +1,79 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  email: String!
+  name: String!
+  avatar: String!
+  boards: [Board!]!
+}
+
+type Board {
+  id: Int!
+  title: String!
+  createdAt: DateTime!
+  todos: [Todo!]!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Todo {
+  id: Int!
+  content: String!
+  isDone: Boolean!
+  createdAt: DateTime!
+  board: Board!
+}
+
+type Query {
+  getTodos: [Todo!]!
+  getTodo(id: Float!): Todo!
+  getBoards: [Board!]!
+  getBoard(id: Float!): Board!
+  getCurrentUser: User!
+  getUsers: [User!]!
+  getUserById(email: Float!): User!
+  getUserByEmail(email: String!): User!
+}
+
+type Mutation {
+  createTodo(newTodoData: CreateTodoDto!): Todo!
+  updateTodo(updateTodoData: UpdateTodoDto!): Todo!
+  deleteTodo(id: Float!): Todo!
+  createBoard(newBoardData: CreateBoardInput!): Board!
+  updateBoard(updateBoardData: UpdateBoardInput!): Board!
+  deleteBoard(id: Float!): Board!
+  updateUser(updateUserData: UpdateUserDto!): User!
+}
+
+input CreateTodoDto {
+  content: String!
+  boardId: Int!
+}
+
+input UpdateTodoDto {
+  id: Int!
+  content: String!
+}
+
+input CreateBoardInput {
+  title: String!
+  userId: Int!
+}
+
+input UpdateBoardInput {
+  id: Int!
+  title: String!
+}
+
+input UpdateUserDto {
+  id: Int!
+  name: String!
+  avatar: String!
+}
