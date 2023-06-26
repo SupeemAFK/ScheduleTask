@@ -7,4 +7,7 @@ export class UpdateBoardInput {
 
     @Field(type => String)
     title: string;
+
+    @Field(type => String)
+    img: string;
 }

@@ -13,6 +13,7 @@ type User {
 type Board {
   id: Int!
   title: String!
+  img: String!
   createdAt: DateTime!
   todos: [Todo!]!
   user: User!
@@ -64,12 +65,14 @@ input UpdateTodoDto {
 
 input CreateBoardInput {
   title: String!
+  img: String!
   userId: Int!
 }
 
 input UpdateBoardInput {
   id: Int!
   title: String!
+  img: String!
 }
 
 input UpdateUserDto {

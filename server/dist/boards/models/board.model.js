@@ -24,6 +24,10 @@ __decorate([
     __metadata("design:type", String)
 ], Board.prototype, "title", void 0);
 __decorate([
+    (0, graphql_1.Field)(type => String),
+    __metadata("design:type", String)
+], Board.prototype, "img", void 0);
+__decorate([
     (0, graphql_1.Field)(type => Date),
     __metadata("design:type", Date)
 ], Board.prototype, "createdAt", void 0);

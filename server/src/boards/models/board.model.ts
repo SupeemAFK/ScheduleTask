@@ -10,6 +10,9 @@ export class Board {
     @Field(type => String)
     title: string;
 
+    @Field(type => String)
+    img: string;
+
     @Field(type => Date)
     createdAt: Date;
 

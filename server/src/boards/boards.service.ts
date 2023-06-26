@@ -19,6 +19,7 @@ export class BoardsService {
         return this.prisma.board.create({ 
             data: { 
                 title: createBoardInput.title,
+                img: createBoardInput.img,
                 userId: createBoardInput.userId
             },
             include: { user: true, todos: true } 
@@ -31,7 +32,8 @@ export class BoardsService {
                 id: updateBoardInput.id
             },
             data: {
-                title: updateBoardInput.title
+                title: updateBoardInput.title,
+                img: updateBoardInput.img
             },
             include: { user: true, todos: true }
          })

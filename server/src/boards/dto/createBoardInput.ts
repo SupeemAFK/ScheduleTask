@@ -5,6 +5,9 @@ export class CreateBoardInput {
     @Field(type => String)
     title: string;
     
+    @Field(type => String)
+    img: string;
+
     @Field(type => Int)
     userId: number;
 }

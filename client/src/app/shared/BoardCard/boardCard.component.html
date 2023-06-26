@@ -1,0 +1,22 @@
+<a [routerLink]="['/board', board.id]">
+    <div class="bg-zinc-800 text-white cursor-pointer grayscale-[40%] hover:scale-[1.05] hover:grayscale-0 transition-all rounded-sm">
+        <div class="w-full max-h-52 overflow-hidden rounded-t-sm">
+            <img class="w-full" [src]="board.img" [alt]="board.title" />
+        </div>
+        <div class="px-5 pb-1 pt-5 text-sm">
+            <p class="font-bold text-xl">{{ board.title }}</p>
+        </div>
+        <div class="flex items-center px-5 py-1 text-sm">
+            <p class="font-semibold">CreatedBy:</p>
+            <div class="flex items-center ml-2">
+                <div class="w-8 h-8 overflow-hidden rounded-full">
+                    <img class="w-full object-cover" src="https://64.media.tumblr.com/250fcdeec7efd7a1cd2536a9828c11cd/tumblr_p4vxt7vAcM1sr16b3o2_r1_1280.jpg" alt="" />
+                </div>
+                <p class="ml-1">Miho!</p>
+            </div>
+        </div>
+        <div class="px-5 pt-1 pb-5 text-sm font-semibold">
+            <p>CreatedAt: <span class="font-normal">{{ board.createdAt }}</span></p>
+        </div>
+    </div>
+</a>
