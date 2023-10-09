@@ -20,6 +20,10 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(type => String),
     __metadata("design:type", String)
+], CreateBoardInput.prototype, "details", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => String),
+    __metadata("design:type", String)
 ], CreateBoardInput.prototype, "img", void 0);
 __decorate([
     (0, graphql_1.Field)(type => graphql_1.Int),

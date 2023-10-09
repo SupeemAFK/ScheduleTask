@@ -1,5 +1,5 @@
 import { User } from "./user.model";
-import { Todo } from "./todo.model";
+import { Task } from "./task.model";
 
 export interface Board {
     id: number;
@@ -7,5 +7,5 @@ export interface Board {
     title: string;
     createdAt: Date;
     user: User;
-    todos: Todo[];
+    tasks: Task[];
 }

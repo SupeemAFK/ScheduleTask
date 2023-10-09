@@ -5,18 +5,24 @@
 type User {
   id: Int!
   email: String!
-  name: String!
+  username: String!
   avatar: String!
   boards: [Board!]!
 }
 
-type Board {
+type NoteLink {
   id: Int!
   title: String!
-  img: String!
+  link: String!
+}
+
+type Note {
+  id: Int!
+  title: String!
+  details: String!
+  links: [NoteLink!]!
   createdAt: DateTime!
-  todos: [Todo!]!
-  user: User!
+  board: Board!
 }
 
 """
@@ -24,47 +30,96 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Todo {
+type Board {
   id: Int!
-  content: String!
-  isDone: Boolean!
+  title: String!
+  details: String!
+  img: String!
+  createdAt: DateTime!
+  notes: Note!
+  tasks: [Task!]!
+  user: User!
+}
+
+type TaskLink {
+  id: Int!
+  title: String!
+  link: String!
+}
+
+type Task {
+  id: Int!
+  title: String!
+  img: String!
+  details: String!
+  links: [TaskLink!]!
+  deadline: DateTime!
+  completed: Boolean!
   createdAt: DateTime!
   board: Board!
 }
 
 type Query {
-  getTodos: [Todo!]!
-  getTodo(id: Float!): Todo!
+  getTasks: [Task!]!
+  getTask(id: Float!): Task!
   getBoards: [Board!]!
   getBoard(id: Float!): Board!
   getCurrentUser: User!
   getUsers: [User!]!
-  getUserById(email: Float!): User!
+  getUserById(id: Float!): User!
   getUserByEmail(email: String!): User!
+  getNotes: [Note!]!
+  getNote(id: Float!): Note!
 }
 
 type Mutation {
-  createTodo(newTodoData: CreateTodoDto!): Todo!
-  updateTodo(updateTodoData: UpdateTodoDto!): Todo!
-  deleteTodo(id: Float!): Todo!
+  createTask(newTodoData: CreateTaskDto!): Task!
+  updateTask(updateTodoData: UpdateTaskDto!): Task!
+  deleteTask(id: Float!): Task!
   createBoard(newBoardData: CreateBoardInput!): Board!
   updateBoard(updateBoardData: UpdateBoardInput!): Board!
   deleteBoard(id: Float!): Board!
+  createUser(createUserData: CreateUserDto!): User
   updateUser(updateUserData: UpdateUserDto!): User!
+  createNote(newNoteData: CreateNoteDto!): Note!
+  updateNote(updateNoteData: UpdateNoteDto!): Note!
+  deleteNote(id: Float!): Note!
 }
 
-input CreateTodoDto {
-  content: String!
+input CreateTaskDto {
+  title: String!
+  img: String!
+  details: String!
+  links: [CreateTaskLinkInput!]!
+  deadline: DateTime!
   boardId: Int!
 }
 
-input UpdateTodoDto {
+input CreateTaskLinkInput {
+  title: String!
+  link: String!
+}
+
+input UpdateTaskDto {
   id: Int!
-  content: String!
+  title: String!
+  img: String!
+  details: String!
+  links: [UpdateTaskLinkInput!]!
+  deadline: DateTime!
+  completed: Boolean!
+}
+
+input UpdateTaskLinkInput {
+  id: Int!
+  title: String!
+  link: String!
+  taskId: Int!
 }
 
 input CreateBoardInput {
   title: String!
+  details: String!
   img: String!
   userId: Int!
 }
@@ -72,11 +127,40 @@ input CreateBoardInput {
 input UpdateBoardInput {
   id: Int!
   title: String!
+  details: String!
   img: String!
+}
+
+input CreateUserDto {
+  email: String!
+  password: String
+  username: String!
+  avatar: String!
 }
 
 input UpdateUserDto {
   id: Int!
   name: String!
   avatar: String!
+}
+
+input CreateNoteDto {
+  title: String!
+  details: String!
+  links: [NoteLinkInput!]!
+  boardId: Int!
+}
+
+input NoteLinkInput {
+  id: Int!
+  title: String!
+  link: String!
+  noteId: Int!
+}
+
+input UpdateNoteDto {
+  id: Int!
+  title: String!
+  details: String!
+  links: [NoteLinkInput!]!
 }

@@ -15,10 +15,10 @@ const apollo_1 = require("@nestjs/apollo");
 const prisma_module_1 = require("./prisma/prisma.module");
 const config_1 = require("@nestjs/config");
 const node_path_1 = require("node:path");
-const todos_module_1 = require("./todos/todos.module");
+const tasks_module_1 = require("./tasks/tasks.module");
 const boards_module_1 = require("./boards/boards.module");
-const auth_module_1 = require("./auth/auth.module");
 const users_module_1 = require("./users/users.module");
+const notes_module_1 = require("./notes/notes.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -27,9 +27,9 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot(),
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
-                autoSchemaFile: (0, node_path_1.join)(process.cwd(), 'src/schema.gql')
+                autoSchemaFile: (0, node_path_1.join)(process.cwd(), 'src/schema.gql'),
             }),
-            prisma_module_1.PrismaModule, todos_module_1.TodosModule, boards_module_1.BoardsModule, auth_module_1.AuthModule, users_module_1.UsersModule
+            prisma_module_1.PrismaModule, tasks_module_1.TasksModule, boards_module_1.BoardsModule, users_module_1.UsersModule, notes_module_1.NotesModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

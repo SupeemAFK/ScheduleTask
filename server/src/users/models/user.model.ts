@@ -10,7 +10,7 @@ export class User {
     email: string;
 
     @Field(type => String)
-    name: string;
+    username: string;
 
     @Field(type => String)
     avatar: string;

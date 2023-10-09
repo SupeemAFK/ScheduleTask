@@ -4,6 +4,9 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 export class CreateBoardInput {
     @Field(type => String)
     title: string;
+
+    @Field(type => String)
+    details: string;
     
     @Field(type => String)
     img: string;

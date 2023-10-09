@@ -16,14 +16,22 @@ exports.UsersResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const users_service_1 = require("./users.service");
 const updateUserDto_1 = require("./dto/updateUserDto");
+const createUserDto_1 = require("./dto/createUserDto");
 const user_model_1 = require("./models/user.model");
 let UsersResolver = exports.UsersResolver = class UsersResolver {
     constructor(usersService) {
         this.usersService = usersService;
     }
     async getCurrentUser(ctx) {
-        const user = await this.usersService.getUserById(ctx.req.session.user_id);
-        return user;
+        if (ctx.req.session?.user_id) {
+            const user = await this.usersService.getUserById(ctx.req.session.user_id);
+            return user;
+        }
+        else {
+            {
+                user: null;
+            }
+        }
     }
     async getUsers() {
         const users = await this.usersService.getUsers();
@@ -35,6 +43,10 @@ let UsersResolver = exports.UsersResolver = class UsersResolver {
     }
     async getUserByEmail(email) {
         const user = await this.usersService.getUserByEmail(email);
+        return user;
+    }
+    async createUser(createUserDto) {
+        const user = await this.usersService.createUser(createUserDto);
         return user;
     }
     async updateUser(updateUserDto) {
@@ -57,7 +69,7 @@ __decorate([
 ], UsersResolver.prototype, "getUsers", null);
 __decorate([
     (0, graphql_1.Query)(returns => user_model_1.User),
-    __param(0, (0, graphql_1.Args)('email')),
+    __param(0, (0, graphql_1.Args)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
@@ -69,6 +81,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "getUserByEmail", null);
+__decorate([
+    (0, graphql_1.Mutation)(returns => user_model_1.User, { nullable: true }),
+    __param(0, (0, graphql_1.Args)('createUserData')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [createUserDto_1.CreateUserDto]),
+    __metadata("design:returntype", Promise)
+], UsersResolver.prototype, "createUser", null);
 __decorate([
     (0, graphql_1.Mutation)(returns => user_model_1.User),
     __param(0, (0, graphql_1.Args)('updateUserData')),

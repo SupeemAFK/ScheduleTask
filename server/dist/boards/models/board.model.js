@@ -11,8 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Board = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const todo_model_1 = require("../../todos/models/todo.model");
+const task_model_1 = require("../../tasks/models/task.model");
 const user_model_1 = require("../../users/models/user.model");
+const note_model_1 = require("../../notes/models/note.model");
 let Board = exports.Board = class Board {
 };
 __decorate([
@@ -26,15 +27,23 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(type => String),
     __metadata("design:type", String)
+], Board.prototype, "details", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => String),
+    __metadata("design:type", String)
 ], Board.prototype, "img", void 0);
 __decorate([
     (0, graphql_1.Field)(type => Date),
     __metadata("design:type", Date)
 ], Board.prototype, "createdAt", void 0);
 __decorate([
-    (0, graphql_1.Field)(type => [todo_model_1.Todo]),
+    (0, graphql_1.Field)(type => note_model_1.Note),
     __metadata("design:type", Array)
-], Board.prototype, "todos", void 0);
+], Board.prototype, "notes", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => [task_model_1.Task]),
+    __metadata("design:type", Array)
+], Board.prototype, "tasks", void 0);
 __decorate([
     (0, graphql_1.Field)(type => user_model_1.User),
     __metadata("design:type", user_model_1.User)

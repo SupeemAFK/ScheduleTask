@@ -10,8 +10,8 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   email String @unique
-  password String 
-  name String
+  password String?
+  username String
   avatar String
   boards Board[]
 }
@@ -19,18 +19,51 @@ model User {
 model Board {
   id Int @id @default(autoincrement())
   title String
+  details String
   img String
   createdAt DateTime @default(now()) @db.Timestamptz(3)
-  todos Todo[]
+  notes Note[]
+  tasks Task[]
   user User @relation(fields: [userId], references: [id])
   userId Int
 }
 
-model Todo {
-  id        Int @id @default(autoincrement())
-  content   String
-  isDone    Boolean  @default(true)
+model Note {
+  id Int @id @default(autoincrement())
+  title String
+  details String
+  links NoteLink[]
   createdAt DateTime @default(now()) @db.Timestamptz(3)
-  board Board @relation(fields: [boardId], references: [id])
   boardId Int 
+  board Board @relation(fields: [boardId], references: [id])
 }
+
+model Task {
+  id Int @id @default(autoincrement())
+  title String
+  details String
+  img String
+  links TaskLink[]
+  deadline DateTime
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  boardId Int 
+  board Board @relation(fields: [boardId], references: [id])
+}
+
+model NoteLink {
+  id Int @id @default(autoincrement())
+  title String
+  link String
+  noteId Int
+  note Note @relation(fields: [noteId], references: [id])
+}
+
+model TaskLink {
+  id Int @id @default(autoincrement())
+  title String
+  link String
+  taskId Int
+  task Task @relation(fields: [taskId], references: [id])
+}
+

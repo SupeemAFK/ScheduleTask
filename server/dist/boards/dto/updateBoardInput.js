@@ -24,6 +24,10 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(type => String),
     __metadata("design:type", String)
+], UpdateBoardInput.prototype, "details", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => String),
+    __metadata("design:type", String)
 ], UpdateBoardInput.prototype, "img", void 0);
 exports.UpdateBoardInput = UpdateBoardInput = __decorate([
     (0, graphql_1.InputType)()

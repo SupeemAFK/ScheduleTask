@@ -9,14 +9,6 @@ const routes: Routes = [
   {
     path: "board/:id",
     loadComponent: () => import("./features/board/board.component").then((m) => m.BoardComponent)
-  },
-  {
-    path: "signin",
-    loadComponent: () => import("./core/auth/signin/signin.component").then((m) => m.SigninComponent)
-  },
-  {
-    path: "signup",
-    loadComponent: () => import("./core/auth/signup/signup.component").then((m) => m.SignupComponent)
   }
 ];
 

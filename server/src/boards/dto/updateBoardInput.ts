@@ -9,5 +9,8 @@ export class UpdateBoardInput {
     title: string;
 
     @Field(type => String)
+    details: string;
+
+    @Field(type => String)
     img: string;
 }

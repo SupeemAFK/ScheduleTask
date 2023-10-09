@@ -17,19 +17,20 @@ let BoardsService = exports.BoardsService = class BoardsService {
         this.prisma = prisma;
     }
     getBoards() {
-        return this.prisma.board.findMany({ include: { user: true, todos: true } });
+        return this.prisma.board.findMany({ include: { user: true, tasks: true, notes: true } });
     }
     getBoard(id) {
-        return this.prisma.board.findUnique({ where: { id }, include: { user: true, todos: true } });
+        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: true, notes: true } });
     }
     createBoard(createBoardInput) {
         return this.prisma.board.create({
             data: {
                 title: createBoardInput.title,
+                details: createBoardInput.details,
                 img: createBoardInput.img,
                 userId: createBoardInput.userId
             },
-            include: { user: true, todos: true }
+            include: { user: true, tasks: true, notes: true }
         });
     }
     updateBoard(updateBoardInput) {
@@ -41,11 +42,11 @@ let BoardsService = exports.BoardsService = class BoardsService {
                 title: updateBoardInput.title,
                 img: updateBoardInput.img
             },
-            include: { user: true, todos: true }
+            include: { user: true, tasks: true, notes: true }
         });
     }
     deleteBoard(id) {
-        return this.prisma.board.delete({ where: { id }, include: { user: true, todos: true } });
+        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: true, notes: true } });
     }
 };
 exports.BoardsService = BoardsService = __decorate([

@@ -13,9 +13,7 @@ export declare class UsersService {
     getUserByEmail(email: string): import("@prisma/client").Prisma.Prisma__UserClient<import("@prisma/client").User & {
         boards: import("@prisma/client").Board[];
     }, never>;
-    createUser(createUserDto: CreateUserDto): import("@prisma/client").Prisma.Prisma__UserClient<import("@prisma/client").User & {
-        boards: import("@prisma/client").Board[];
-    }, never>;
+    createUser(createUserDto: CreateUserDto): Promise<import("@prisma/client").User>;
     updateUser(updateUserDto: UpdateUserDto): import("@prisma/client").Prisma.Prisma__UserClient<import("@prisma/client").User & {
         boards: import("@prisma/client").Board[];
     }, never>;

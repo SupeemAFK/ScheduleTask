@@ -25,15 +25,26 @@ let UsersService = exports.UsersService = class UsersService {
     getUserByEmail(email) {
         return this.prisma.user.findUnique({ where: { email }, include: { boards: true } });
     }
-    createUser(createUserDto) {
+    async createUser(createUserDto) {
+        const user = await this.prisma.user.findUnique({ where: { email: createUserDto.email } });
+        if (user)
+            return null;
+        if (createUserDto.password) {
+            return this.prisma.user.create({
+                data: {
+                    username: createUserDto.username,
+                    email: createUserDto.email,
+                    password: createUserDto.password,
+                    avatar: createUserDto.avatar
+                }
+            });
+        }
         return this.prisma.user.create({
             data: {
+                username: createUserDto.username,
                 email: createUserDto.email,
-                name: createUserDto.name,
-                password: createUserDto.password,
-                avatar: ""
-            },
-            include: { boards: true }
+                avatar: createUserDto.avatar
+            }
         });
     }
     updateUser(updateUserDto) {
@@ -42,7 +53,7 @@ let UsersService = exports.UsersService = class UsersService {
                 id: updateUserDto.id
             },
             data: {
-                name: updateUserDto.name,
+                username: updateUserDto.name,
                 avatar: updateUserDto.avatar
             },
             include: { boards: true }

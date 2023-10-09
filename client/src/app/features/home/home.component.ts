@@ -18,10 +18,10 @@ export class HomeComponent {
       createdAt: new Date(),
       user: {
         id: 1,
-        name: "Miho",
+        username: "Miho",
         avatar: "https://64.media.tumblr.com/250fcdeec7efd7a1cd2536a9828c11cd/tumblr_p4vxt7vAcM1sr16b3o2_r1_1280.jpg",
       },
-      todos: []
+      tasks: []
     },
     {
       id: 1,
@@ -30,10 +30,10 @@ export class HomeComponent {
       createdAt: new Date(),
       user: {
         id: 1,
-        name: "Miho",
+        username: "Miho",
         avatar: "https://64.media.tumblr.com/250fcdeec7efd7a1cd2536a9828c11cd/tumblr_p4vxt7vAcM1sr16b3o2_r1_1280.jpg",
       },
-      todos: []
+      tasks: []
     },
   ]
 }

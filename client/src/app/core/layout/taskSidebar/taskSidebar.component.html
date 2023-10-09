@@ -1,0 +1,53 @@
+<div [class]='taskSidebarOpen ? "right-0 visible bg-neutral-800 fixed top-0 h-full mt-14 w-80 p-3 transition-all duration-300" : "right-[-21%] invisible bg-neutral-700 fixed top-0 h-full mt-14 w-80 p-3 transition-all duration-300"'>
+    <div class="overflow-y-auto h-full">
+        <div>
+            <h1 class="text-2xl font-semibold text-white">{{ deadline }}</h1>
+        </div>
+        <div class="mt-2" *ngIf="dateSelectInfodateSelectInfo.start; else elseBlock;">
+            <button (click)="openCreateTask()" class="border-2 border-white p-2 rounded-md text-white w-full mt-1 hover:text-black hover:bg-white transition-all duration-300">Add task+</button>
+        </div>
+        <ng-template #elseBlock>
+            <div class="mt-2">
+                <h1 class="border-2 border-white p-2 rounded-md text-white w-full mt-1 text-center">Select the date brefore create task</h1>
+            </div>
+        </ng-template>
+        <div class="mt-5" *ngFor="let task of tasks">
+            <app-sidebar-task-card [task]="task" />
+        </div>
+        <div class="mt-16"></div>
+    </div>
+    <div [class]='taskSidebarOpen ? "visible mr-80 fixed top-1/2 right-0 transition-all duration-300" : "visible mr-0 fixed top-1/2 right-0 transition-all duration-300"'>
+        <button (click)="setOpenAndClose()" class="mt-10 w-10 h-10 text-black bg-white rounded-[50%]">{{ taskSidebarOpen ? ">" : "<" }}</button>
+    </div>
+</div>
+<div class="fixed w-full h-full z-50" *ngIf="isOpenCreateTask">
+    <div (click)="closeCreateTaskBackground($event)" class="flex justify-center items-center w-full h-full z-50">
+        <div class="bg-neutral-800 p-5 relative flex flex-col w-96 rounded-md max-h-[36rem] overflow-y-auto">
+            <button (click)="closeCreateTask()" class="fixed top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white text-black rounded-[50%]">X</button>
+            <h1 class="text-white text-lg">Create task</h1>
+            <input [value]="createTaskInput.title" (change)="onChangeInput($event)" name="title" type="text" placeholder="title" class="mt-2 p-3 rounded-md w-full" />
+            <textarea [value]="createTaskInput.details" (change)="onChangeInput($event)" name="details" type="text" placeholder="details" class="mt-2 p-3 rounded-md w-full"></textarea>
+            <input (change)="onChangeFile($event)" name="img" type="file" placeholder="img" class="mt-2 p-3 rounded-md w-full text-white" />
+            <div class="mt-3 max-h-96 overflow-hidden" *ngIf="createTaskInput.img.url">
+                <img class="object-cover w-full" [src]="createTaskInput.img.url" alt="file" />
+            </div>
+            <div class="mt-2">
+                <h1 class="text-white">Add link</h1>
+                <div class="flex items-center">
+                    <input [value]="createLinkInput.title" (change)="onChangeInputLink($event)" name="title" type="text" placeholder="title" class="p-1 rounded-md w-full" />
+                    <input [value]="createLinkInput.link" (change)="onChangeInputLink($event)" name="link" type="text" placeholder="link" class="p-1 rounded-md w-full" />
+                </div>
+                <button (click)="createLink()" class="bg-green-500 text-white rounded-[50%] w-7 h-7 flex justify-center items-center">+</button>
+                <div>
+                    <div class="flex items-center" *ngFor="let link of links">
+                        <p class="mr-2 text-white">{{ link.title }}: </p>
+                        <a class="text-blue-400 underline break-all">{{ link.link }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end items-center mt-2">
+                <button (click)="createTask()" class="p-3 border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 rounded-md">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

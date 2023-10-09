@@ -1,6 +1,7 @@
 import { Resolver, Query, Context, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/updateUserDto'
+import { CreateUserDto } from './dto/createUserDto';
 import { User } from './models/user.model'
 
 @Resolver(of => User)
@@ -9,8 +10,13 @@ export class UsersResolver {
 
     @Query(returns => User)
     async getCurrentUser(@Context() ctx: any) {
-        const user = await this.usersService.getUserById(ctx.req.session.user_id)
-        return user
+        if (ctx.req.session?.user_id) {
+            const user = await this.usersService.getUserById(ctx.req.session.user_id)
+            return user
+        } 
+        else {
+            { user: null }
+        }
     }
 
     @Query(returns => [User])
@@ -20,7 +26,7 @@ export class UsersResolver {
     }
 
     @Query(returns => User)
-    async getUserById(@Args('email') id: number) {
+    async getUserById(@Args('id') id: number) {
         const user = await this.usersService.getUserById(id)
         return user
     }
@@ -29,6 +35,12 @@ export class UsersResolver {
     async getUserByEmail(@Args('email') email: string) {
         const user = await this.usersService.getUserByEmail(email)
         return user
+    }
+
+    @Mutation(returns => User, { nullable: true })
+    async createUser(@Args('createUserData') createUserDto: CreateUserDto) {
+        const user = await this.usersService.createUser(createUserDto);
+        return user;
     }
 
     @Mutation(returns => User)
