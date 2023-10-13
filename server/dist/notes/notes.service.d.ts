@@ -12,14 +12,14 @@ export declare class NotesService {
         links: import("@prisma/client").NoteLink[];
         board: import("@prisma/client").Board;
     }, never>;
-    createNote(createNoteDto: CreateNoteDto): Promise<import("@prisma/client").Note & {
+    createNote(createNoteDto: CreateNoteDto): import("@prisma/client").Prisma.Prisma__NoteClient<import("@prisma/client").Note & {
         links: import("@prisma/client").NoteLink[];
         board: import("@prisma/client").Board;
-    }>;
-    updateNote(updateNoteDto: UpdateNoteDto): Promise<import("@prisma/client").Note & {
+    }, never>;
+    updateNote(updateNoteDto: UpdateNoteDto): import("@prisma/client").Prisma.Prisma__NoteClient<import("@prisma/client").Note & {
         links: import("@prisma/client").NoteLink[];
         board: import("@prisma/client").Board;
-    }>;
+    }, never>;
     deleteNote(id: number): import("@prisma/client").Prisma.Prisma__NoteClient<import("@prisma/client").Note, never>;
     getNoteLinks(noteId: number): import("@prisma/client").Prisma.PrismaPromise<import("@prisma/client").NoteLink[]>;
 }

@@ -34,7 +34,7 @@ export class CalendarComponent implements OnChanges {
   @Input() tasks: Task[] = []
   @Input() taskSidebarOpen = false;
   @Output() taskSidebarOpenEvent = new EventEmitter<boolean>();
-  @Output() dateSelectInfOutput = new EventEmitter<DateSelectArg>();
+  @Output() dateSelectInfoOutput = new EventEmitter<Date>();
   @ViewChild('calendar') calendarComponent: FullCalendarComponent = {} as FullCalendarComponent;
 
   ngOnChanges() {
@@ -48,9 +48,8 @@ export class CalendarComponent implements OnChanges {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    console.log(selectInfo)
     this.taskSidebarOpenEvent.emit(true);
-    this.dateSelectInfOutput.emit(selectInfo);
+    this.dateSelectInfoOutput.emit(selectInfo.start);
   }
 
   handleEventClick(clickInfo: EventClickArg) {
@@ -58,15 +57,10 @@ export class CalendarComponent implements OnChanges {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove();
     }*/
-    this.dateSelectInfOutput.emit({
-      allDay: clickInfo.event.allDay, 
-      start: clickInfo.event.start,
-      startStr: clickInfo.event.startStr,
-      end: clickInfo.event.end,
-      endStr: clickInfo.event.endStr,
-      jsEvent: clickInfo.jsEvent
-    } as DateSelectArg);
-    this.taskSidebarOpenEvent.emit(true);
+    if (clickInfo.event.start) {
+      this.dateSelectInfoOutput.emit(clickInfo.event.start);
+      this.taskSidebarOpenEvent.emit(true);
+    }
   }
 
   handleEvents(events: EventApi[]) {

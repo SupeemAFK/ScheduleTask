@@ -1,4 +1,3 @@
-import { Note } from './models/note.model';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/createNoteDto';
 import { UpdateNoteDto } from './dto/updateNoteDto';
@@ -22,5 +21,4 @@ export declare class NotesResolver {
         board: import("@prisma/client").Board;
     }>;
     deleteNote(id: number): Promise<import("@prisma/client").Note>;
-    links(note: Note): Promise<import("@prisma/client").NoteLink[]>;
 }

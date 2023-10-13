@@ -1,21 +1,18 @@
 <app-layout-sidebar></app-layout-sidebar>
 <app-layout-task-sidebar
-    *ngIf="boardId" 
-    [boardId]="boardId"
-    [tasks]="filterTasks"
-    [dateSelectInfodateSelectInfo]="dateSelectInfo" 
+    *ngIf="taskService.board.id" 
+    [selectedDate]="dateSelectInfo"
     [taskSidebarOpen]="taskSidebarOpen" 
-    (addTaskEvent)="setTaskAfterAdd($event)" 
     (taskSidebarOpenEvent)="setTaskSidebarOpen($event)"
 >
 </app-layout-task-sidebar>
-<div class="p-10 mt-14" *ngIf="boardId; else elseBlock;">
+<div class="p-10 mt-14" *ngIf="taskService.board.id; else elseBlock;">
     <div [class]='taskSidebarOpen ? "w-[calc(100%-10rem)] transition-all duration-300" : "w-full transition-all duration-300" '>
         <div class="mx-10 xl:px-80">
             <app-calendar 
              [taskSidebarOpen]="taskSidebarOpen" 
-             [tasks]="tasks"
-             (dateSelectInfOutput)="setDateSelectInfo($event)"
+             [tasks]="taskService.tasks()"
+             (dateSelectInfoOutput)="setDateSelectInfo($event)"
              (taskSidebarOpenEvent)="setTaskSidebarOpen($event)" 
             >
             </app-calendar>
@@ -26,13 +23,13 @@
             <h1 class="text-white font-semibold text-lg">All Task</h1>
             <h1 class="text-white font-semibold text-lg">Current Date: {{ currentDate }}</h1>
             <div>
-                <div class="mt-10" *ngFor="let dateTask of dateTasks">
-                    <h1 class="text-white font-semibold text-lg">Date {{ dateTask.deadline }}</h1>
+                <div class="mt-10" *ngFor="let dateTask of taskService.dateTasks()">
+                    <<h1 class="text-white font-semibold text-lg">Date {{ dateTask.deadline }}</h1>
                     <div class="flex flex-wrap">
                         <div class="w-64 mr-5 mt-5" *ngFor="let task of dateTask.tasks">
-                            <app-sidebar-task-card [task]="task"></app-sidebar-task-card>
+                            <app-sidebar-task-card [isOwner]="userService.currentUser?.id == taskService.board.user.id" [task]="task" />
                         </div>
-                    </div>
+                    </div>>
                 </div>
             </div>
         </div>

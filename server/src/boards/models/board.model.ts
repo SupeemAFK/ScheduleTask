@@ -14,9 +14,6 @@ export class Board {
     @Field(type => String)
     details: string;
 
-    @Field(type => String)
-    img: string;
-
     @Field(type => Date)
     createdAt: Date;
 

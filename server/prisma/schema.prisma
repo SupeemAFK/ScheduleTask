@@ -20,7 +20,6 @@ model Board {
   id Int @id @default(autoincrement())
   title String
   details String
-  img String
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   notes Note[]
   tasks Task[]
@@ -35,7 +34,7 @@ model Note {
   links NoteLink[]
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   boardId Int 
-  board Board @relation(fields: [boardId], references: [id])
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model Task {
@@ -48,7 +47,7 @@ model Task {
   completed Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   boardId Int 
-  board Board @relation(fields: [boardId], references: [id])
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model NoteLink {
@@ -56,7 +55,7 @@ model NoteLink {
   title String
   link String
   noteId Int
-  note Note @relation(fields: [noteId], references: [id])
+  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
 }
 
 model TaskLink {
@@ -64,6 +63,6 @@ model TaskLink {
   title String
   link String
   taskId Int
-  task Task @relation(fields: [taskId], references: [id])
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 

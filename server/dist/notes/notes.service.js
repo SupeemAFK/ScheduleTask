@@ -17,12 +17,12 @@ let NotesService = exports.NotesService = class NotesService {
         this.prismaService = prismaService;
     }
     getNotes() {
-        return this.prismaService.note.findMany({ include: { links: true, board: true } });
+        return this.prismaService.note.findMany({ include: { links: true, board: true, } });
     }
     getNote(id) {
         return this.prismaService.note.findUnique({ where: { id }, include: { links: true, board: true } });
     }
-    async createNote(createNoteDto) {
+    createNote(createNoteDto) {
         return this.prismaService.note.create({
             data: {
                 title: createNoteDto.title,
@@ -35,7 +35,7 @@ let NotesService = exports.NotesService = class NotesService {
             include: { links: true, board: true }
         });
     }
-    async updateNote(updateNoteDto) {
+    updateNote(updateNoteDto) {
         return this.prismaService.note.update({
             where: { id: updateNoteDto.id },
             data: {

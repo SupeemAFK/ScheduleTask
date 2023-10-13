@@ -8,11 +8,11 @@ export class BoardsService {
     constructor(private readonly prisma: PrismaService) {}
 
     getBoards() {
-        return this.prisma.board.findMany({ include: { user: true, tasks: true, notes: true } })
+        return this.prisma.board.findMany({ include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } })
     }
 
     getBoard(id: number) {
-        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: true, notes: true } })
+        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } })
     }
 
     createBoard(createBoardInput: CreateBoardInput) {
@@ -20,10 +20,9 @@ export class BoardsService {
             data: { 
                 title: createBoardInput.title,
                 details: createBoardInput.details,
-                img: createBoardInput.img,
                 userId: createBoardInput.userId
             },
-            include: { user: true, tasks: true, notes: true } 
+            include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } }
         })
     }
 
@@ -34,13 +33,13 @@ export class BoardsService {
             },
             data: {
                 title: updateBoardInput.title,
-                img: updateBoardInput.img
+                details: updateBoardInput.details
             },
-            include: { user: true, tasks: true, notes: true }
+            include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } }
          })
     }
 
     deleteBoard(id: number) {
-        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: true, notes: true } })
+        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } })
     }
 }

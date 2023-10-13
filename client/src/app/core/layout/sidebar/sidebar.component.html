@@ -1,12 +1,16 @@
 <div [class]='sidebarOpen ? "left-0 visible z-10 bg-neutral-800 text-white fixed h-full p-2 w-64 transition-all duration-300" : "left-[-17%] invisible z-10 bg-neutral-800 text-white fixed h-full p-2 w-64 transition-all duration-300"'>
     <div>
         <div class="flex items-center justify-between">
-            <button (click)="openCreateBoard()" class="w-full mr-2 border-[0.01rem] border-[#f7f7f7] p-2 rounded-md transition-all hover:bg-zinc-500">+ New Board</button>
+            <button (click)="openCreateBoard()" class="w-full mr-2 border-[0.01rem] border-[#f7f7f7] p-2 rounded-md transition-all hover:bg-zinc-500">New Board+</button>
         </div>
         <div class="py-5">
-            <div *ngFor="let board of userService.currentUser?.boards">
-                <div [routerLink]="['/board', board.id]" class="transition-all hover:bg-zinc-500 cursor-pointer p-3 rounded-md">
+            <div [routerLink]="['/board', board.id]" class="flex justify-between items-center p-3 transition-all hover:bg-zinc-500 cursor-pointer rounded-md" *ngFor="let board of userService.currentUser?.boards">
+                <div>
                     <p>{{ board.title }}</p>
+                </div>
+                <div class="flex items-center">
+                    <button (click)="editBoard(board)" class="mr-1 flex items-center text-lg rounded-[50%] text-neutral-400 hover:text-white"><ng-icon name="heroPencilSquare"></ng-icon></button>
+                    <button (click)="openDeleteModal(board.id)" class="flex items-center text-lg rounded-[50%] text-neutral-400 hover:text-white"><ng-icon name="heroTrash"></ng-icon></button>   
                 </div>
             </div>
         </div>
@@ -18,16 +22,37 @@
 <div class="fixed w-full h-full z-50" *ngIf="isOpenCreateBoard">
     <div (click)="closeCreateBoardBackground($event)" class="flex justify-center items-center w-full h-full z-50">
         <div class="bg-neutral-800 p-5 relative flex flex-col w-96 rounded-md max-h-[36rem] overflow-y-auto">
-            <button (click)="closeCreateBoard()" class="fixed top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white text-black rounded-[50%]">X</button>
+            <button (click)="closeEditAndCreateBoard()" class="fixed top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white text-black rounded-[50%]">X</button>
             <h1 class="text-white text-lg">Create board</h1>
-            <input [value]="createBoardInput.title" (change)="onChangeInput($event)" name="title" type="text" placeholder="title" class="mt-2 p-3 rounded-md w-full" />
-            <textarea [value]="createBoardInput.details" (change)="onChangeInput($event)" name="details" type="text" placeholder="details" class="mt-2 p-3 rounded-md w-full"></textarea>
-            <input (change)="onChangeFile($event)" name="img" type="file" placeholder="img" class="mt-2 p-3 rounded-md w-full text-white" />
-            <div class="mt-3 overflow-y-auto" *ngIf="createBoardInput.img">
-                <img class="object-cover w-full" [src]="createBoardInput.img" alt="file" />
-            </div>
+            <input [value]="createBoardInput.title" (change)="onChangeCreateInput($event)" name="title" type="text" placeholder="title" class="mt-2 p-3 rounded-md w-full" />
+            <textarea [value]="createBoardInput.details" (change)="onChangeCreateInput($event)" name="details" type="text" placeholder="details" class="mt-2 p-3 rounded-md w-full"></textarea>
             <div class="flex justify-end items-center mt-2">
                 <button (click)="createBoard()" class="p-3 border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 rounded-md">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fixed w-full h-full z-50" *ngIf="isOpenEditBoard">
+    <div (click)="closeCreateBoardBackground($event)" class="flex justify-center items-center w-full h-full z-50">
+        <div class="bg-neutral-800 p-5 relative flex flex-col w-96 rounded-md max-h-[36rem] overflow-y-auto">
+            <button (click)="closeEditAndCreateBoard()" class="fixed top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white text-black rounded-[50%]">X</button>
+            <h1 class="text-white text-lg">Create board</h1>
+            <input [value]="updateBoardInput.title" (change)="onChangeUpdateInput($event)" name="title" type="text" placeholder="title" class="mt-2 p-3 rounded-md w-full" />
+            <textarea [value]="updateBoardInput.details" (change)="onChangeUpdateInput($event)" name="details" type="text" placeholder="details" class="mt-2 p-3 rounded-md w-full"></textarea>
+            <div class="flex justify-end items-center mt-2">
+                <button (click)="updateBoard()" class="p-3 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-300 rounded-md">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fixed w-full h-full z-50" *ngIf="deleteBoardModal.open">
+    <div (click)="closeDeleteModal()" class="flex justify-center items-center w-full h-full z-50">
+        <div class="bg-neutral-800 p-5 rounded-md text-white">
+            <h1 class="text-center text-xl font-semibold">Are you sure to delete this board?</h1>
+            <p class="text-red-500 text-center">*All tasks and data in this board will be deleted</p>
+            <div class="mt-7 flex items-center justify-between px-2">
+                <button (cancel)="closeDeleteModal()" class="p-2 rounded-md border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300">Cancel</button>
+                <button (click)="deleteBoard()" class="p-2 rounded-md border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-300">Confirm</button>
             </div>
         </div>
     </div>

@@ -1,116 +1,64 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, computed, signal } from "@angular/core";
+import { TaskAPIService } from "./api/taskAPI.service";
+import { Board } from "../models/board.model";
+import { Task } from "../models/task.model";
+import * as moment from 'moment';
 
-const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-};
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class TaskService {
-    private configUrl = 'http://localhost:3000/graphql';
-
-    constructor (private readonly http: HttpClient) {}
-
-    getTasks() {
-        const query = `
-            query {
-                getTodos {
-                    id
-                    content
-                    isDone
-                    createdAt
-                }
-            }`;
-  
-      return this.http.post(
-        this.configUrl,
-        JSON.stringify({ query }),
-        { withCredentials: true, headers: httpOptions.headers }
-      );
+    board = {} as Board;
+    tasks = signal<Task[]>(this.board.tasks);
+    filteredTasks = (selectedDate: Date) => {
+        return computed(() => this.tasks().filter(task => moment(task.deadline).format('MMMM Do YYYY') == moment(selectedDate).format('MMMM Do YYYY')))
     }
+    dateTasks = computed(() => {
+        const allDates = this.tasks().map(task => task.deadline); //get all dates
+        const sortedAllDates = allDates.sort((date1, date2) => date1.getTime() - date2.getTime()) //sort
+        const allDatesNewFormat = sortedAllDates.map(date => moment(date).format('MMMM Do YYYY')); //convert format
+        const dates = allDatesNewFormat.filter((item, index) => allDatesNewFormat.indexOf(item) === index); //remove duplicate
+        const datesObj = dates.map(date => ({ deadline: date, tasks: [] as Task[] }));
+    
+        this.tasks().forEach((task) => {
+          datesObj.forEach(dateObj => {
+            if (dateObj.deadline == moment(task.deadline).format('MMMM Do YYYY')) dateObj.tasks.push(task);
+          })
+        })
+    
+        return datesObj;
+    });
+    constructor (private taskAPIService: TaskAPIService) {}
 
-    getTask(id: number) {
-        const query = `
-            query {
-                getTodo(id: ${id}) {
-                    id
-                    content
-                    isDone
-                    createdAt
-                }
-            }`;
-
-        return this.http.post(
-            this.configUrl,
-            JSON.stringify({ query }),
-            { withCredentials: true, headers: httpOptions.headers }
-        );
-    }
-
-    createTask(createTaskInput: { title: string, details: string, img: string, links: { title: string, link: string }[], deadline: Date, boardId: number }) {
-        const query = `
-        mutation {
-            createTask(newTodoData: { 
-              title: "${createTaskInput.title}",
-              img: "${createTaskInput.img}",
-              details: "${createTaskInput.details}",
-              links: ${JSON.stringify(createTaskInput.links).replace(/"([^"]+)":/g, '$1:')},
-              deadline: "${createTaskInput.deadline}",
-              boardId: ${createTaskInput.boardId}
-            }) {
-              id
-              title
-              details
-              img
-              deadline
-              createdAt
-              completed
-              links {
-                id
-                title
-                link
-              }
+    createTask(createTaskData: { title: string, details: string, img: string, links: { title: string, link: string }[], deadline: Date, boardId: number }) {
+        this.taskAPIService.createTask(createTaskData).subscribe((data: any) => {
+            if (data?.data?.createTask) {
+                const newTask: Task = {
+                    ...data.data.createTask,
+                    createdAt: new Date(data.data.createTask.createdAt),
+                    deadline: new Date(data.data.createTask.deadline)
+                };
+                this.tasks.set([...this.tasks(), newTask]);
             }
-          }`;
-        return this.http.post(
-            this.configUrl,
-            JSON.stringify({ query }),
-            { withCredentials: true, headers: httpOptions.headers }
-        );
+        });
     }
 
-    updateTask(updateTodoInput: { id: number, content: string }) {
-        const query = `
-            mutation {
-                updateTodo(updateTodoInput: ${updateTodoInput}) {
-                    id
-                    title
-                    img
-                    createdAt
-                }
-            }`;
-
-        return this.http.post(
-            this.configUrl,
-            JSON.stringify({ query }),
-            { withCredentials: true, headers: httpOptions.headers }
-        );
+    updateTask(updateTaskData: { id: number, title: string, details: string, img: string, links?: { title: string, link: string }[], deadline: Date, completed: boolean }) {
+        this.taskAPIService.updateTask(updateTaskData).subscribe((data: any) => {
+            if (data?.data?.updateTask) {
+                const updatedTask: Task = { 
+                    ...data.data.updateTask, 
+                    createdAt: new Date(data.data.updateTask.createdAt), 
+                    deadline: new Date(data.data.updateTask.deadline) 
+                };
+                this.tasks.set(this.tasks().map(task => task.id == updateTaskData.id ? updatedTask : task));
+            }
+        });
     }
 
     deleteTask(id: number) {
-        const query = `
-            mutation {
-                deleteTodo(id: ${id}) {
-                    id                    
-                }
-            }`;
-
-        return this.http.post(
-            this.configUrl,
-            JSON.stringify({ query }),
-            { withCredentials: true, headers: httpOptions.headers }
-        );
+        this.taskAPIService.deleteTask(id).subscribe((data: any) => {
+            if (data?.data?.deleteTask) {
+                this.tasks.set(this.tasks().filter(task => task.id != id));
+            }
+        });
     }
 }

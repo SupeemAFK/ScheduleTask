@@ -41,9 +41,6 @@ let TasksResolver = exports.TasksResolver = class TasksResolver {
     async deleteTask(id) {
         return await this.taskService.deleteTask(id);
     }
-    async links(task) {
-        return await this.taskService.getTaskLinks(task.id);
-    }
 };
 __decorate([
     (0, graphql_1.Query)(returns => [task_model_1.Task]),
@@ -79,13 +76,6 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], TasksResolver.prototype, "deleteTask", null);
-__decorate([
-    (0, graphql_1.ResolveField)(),
-    __param(0, (0, graphql_1.Parent)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [task_model_1.Task]),
-    __metadata("design:returntype", Promise)
-], TasksResolver.prototype, "links", null);
 exports.TasksResolver = TasksResolver = __decorate([
     (0, graphql_1.Resolver)(of => task_model_1.Task),
     __metadata("design:paramtypes", [tasks_service_1.TasksService])

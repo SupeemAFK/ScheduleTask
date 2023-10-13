@@ -5,7 +5,6 @@ export declare class Board {
     id: number;
     title: string;
     details: string;
-    img: string;
     createdAt: Date;
     notes: Note[];
     tasks: Task[];

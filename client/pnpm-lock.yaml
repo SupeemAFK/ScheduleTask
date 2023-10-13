@@ -53,6 +53,12 @@ dependencies:
   '@fullcalendar/timegrid':
     specifier: ^6.1.9
     version: 6.1.9(@fullcalendar/core@6.1.9)
+  '@ng-icons/core':
+    specifier: ^25.4.0
+    version: 25.4.0
+  '@ng-icons/heroicons':
+    specifier: ^25.4.0
+    version: 25.4.0
   angular-calendar:
     specifier: ^0.31.0
     version: 0.31.0(@angular/core@16.0.0)
@@ -2650,6 +2656,18 @@ packages:
 
   /@mattlewis92/dom-autoscroller@2.4.2:
     resolution: {integrity: sha512-YbrUWREPGEjE/FU6foXcAT1YbVwqD/jkYnY1dFb0o4AxtP3s4xKBthlELjndZih8uwsDWgQZx1eNskRNe2BgZQ==}
+    dev: false
+
+  /@ng-icons/core@25.4.0:
+    resolution: {integrity: sha512-tMQMJQSkiGvFB/byv8Q28jG06QeLTUl40Pxw6/EDMnxUHCmKrdTqZkwAWBO4Qce5kJpTZLLYTAwdGHMCiot1Lg==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
+  /@ng-icons/heroicons@25.4.0:
+    resolution: {integrity: sha512-dxdueO/UmDQVimX7pNDvCXHJrk2EsrrLhlWPrIkUjPO901kFzrsWioxmtP0KlhV8sREUmz34y3NJFthrFumOmA==}
+    dependencies:
+      tslib: 2.6.2
     dev: false
 
   /@ngtools/webpack@16.0.2(@angular/compiler-cli@16.0.0)(typescript@5.0.2)(webpack@5.80.0):

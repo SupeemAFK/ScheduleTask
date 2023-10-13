@@ -1,4 +1,4 @@
-import { Mutation, Query, Resolver, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Mutation, Query, Resolver, Args } from '@nestjs/graphql';
 import { TasksService } from './tasks.service';
 import { Task } from './models/task.model';
 import { CreateTaskDto } from './dto/createTaskDto';
@@ -35,10 +35,5 @@ export class TasksResolver {
     @Mutation(returns => Task)
     async deleteTask(@Args('id') id: number) {
         return await this.taskService.deleteTask(id)
-    }
-
-    @ResolveField()
-    async links(@Parent() task: Task) {
-        return await this.taskService.getTaskLinks(task.id);
     }
 }

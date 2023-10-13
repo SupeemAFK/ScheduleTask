@@ -1,61 +1,95 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/user.model'
-
-const httpOptions = {
-    headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',    
-    }),
-};
+import { AuthService } from '@auth0/auth0-angular';
+import { UserAPIService } from "./api/userAPI.service";
+import { BoardAPIService } from "./api/boardAPI.service";
 
 @Injectable({
     providedIn: "root"
 })
 export class UserService {
     currentUser: User | null = null;
-    private configUrl = 'http://localhost:3000/graphql';
-    constructor (private readonly http: HttpClient) {}
+    constructor(public auth: AuthService, private userAPIService: UserAPIService, private boardAPIService: BoardAPIService) {}
 
-    getUserByEmail(email: string) {
-        const query = `
-        query {
-            getUserByEmail (email: "${email}") {
-              id
-              username
-              email
-              avatar
-              boards {
-                id
-                title
-              }
+    setCurrentUser() {
+        this.auth.user$.subscribe(user => {
+            //If it has user
+            if (user?.name && user?.email && user?.picture) {
+              //Get user from DB and set currentUser
+              this.userAPIService.getUserByEmail(user.email).subscribe((data: any) => {
+                const userData = data?.data?.getUserByEmail;
+                if (userData) {
+                  this.currentUser = { 
+                    id: userData.id,
+                    username: userData.username,
+                    email: userData.email,
+                    avatar: userData.avatar,
+                    boards: userData.boards
+                  }
+                }
+                else if (user?.name && user?.email && user?.picture) {
+                  //Create user in database backend will if it already exists or not
+                  const observe = this.userAPIService.createUserOAUTH({ 
+                    username: user.name.substring(0, 14), 
+                    email: user.email, 
+                    avatar: user.picture 
+                  });
+                  observe.subscribe((data: any) => {
+                    const userData = data?.data?.createUser;
+                    if (userData) {
+                      this.currentUser = { 
+                        id: userData.id,
+                        username: userData.username,
+                        email: userData.email,
+                        avatar: userData.avatar,
+                        boards: userData.boards
+                      }
+                    }
+                  });
+                }
+              })
             }
-        }`;
-        return this.http.post(
-            this.configUrl,
-            JSON.stringify({ query }),
-            { withCredentials: true, headers: httpOptions.headers },
-        );
+          })
     }
 
-    createUserOAUTH (createUserData: { username: string, email: string, avatar: string }) {
-        const query = `
-            mutation {
-                createUser(createUserData: { 
-                    username: "${createUserData.username}", 
-                    email: "${createUserData.email}", 
-                    avatar: "${createUserData.avatar}" 
-                }) {
-                    username
-                    email
-                    avatar
-                }
-          }`;
+    createCurrentUserBoard(createBoardData: { title: string, details: string }) {
+      if (this.currentUser) {
+        this.boardAPIService.createBoard({ 
+          title: createBoardData.title,
+          details: createBoardData.details,
+          userId: this.currentUser.id
+        })
+        .subscribe((data: any) => {
+          if (data?.data?.createBoard && this.currentUser?.boards) {
+            this.currentUser.boards = [...this.currentUser.boards, data.data.createBoard]
+          }
+        })
+      }
+    }
 
-    return this.http.post(
-        this.configUrl,
-        JSON.stringify({ query }),
-        { withCredentials: true, headers: httpOptions.headers },
-      );
+    updateCurrentUserBoard(updateBoardData: { id: number, title: string, details: string }) {
+      if (this.currentUser) {
+        this.boardAPIService.updateBoard({ 
+          id: updateBoardData.id,
+          title: updateBoardData.title,
+          details: updateBoardData.details
+        })
+        .subscribe((data: any) => {
+          if (data?.data?.updateBoard && this.currentUser?.boards) {
+            this.currentUser.boards = this.currentUser.boards.map(board => board.id == updateBoardData.id ? data.data.updateBoard : board);
+          }
+        })
+      }
+    }
+
+    deleteCurrentUserBoard(id: number) {
+      if (this.currentUser) {
+        this.boardAPIService.deleteBoard(id)
+        .subscribe((data: any) => {
+          if (data?.data?.deleteBoard && this.currentUser?.boards) {
+            this.currentUser.boards = this.currentUser.boards.filter(board => board.id != id);
+          }
+        })
+      }
     }
 }

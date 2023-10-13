@@ -34,7 +34,6 @@ type Board {
   id: Int!
   title: String!
   details: String!
-  img: String!
   createdAt: DateTime!
   notes: Note!
   tasks: [Task!]!
@@ -105,22 +104,19 @@ input UpdateTaskDto {
   title: String!
   img: String!
   details: String!
-  links: [UpdateTaskLinkInput!]!
+  links: [UpdateTaskLinkInput!]
   deadline: DateTime!
   completed: Boolean!
 }
 
 input UpdateTaskLinkInput {
-  id: Int!
   title: String!
   link: String!
-  taskId: Int!
 }
 
 input CreateBoardInput {
   title: String!
   details: String!
-  img: String!
   userId: Int!
 }
 
@@ -128,7 +124,6 @@ input UpdateBoardInput {
   id: Int!
   title: String!
   details: String!
-  img: String!
 }
 
 input CreateUserDto {

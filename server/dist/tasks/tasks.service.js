@@ -17,10 +17,10 @@ let TasksService = exports.TasksService = class TasksService {
         this.prisma = prisma;
     }
     getTasks() {
-        return this.prisma.task.findMany({ include: { board: true } });
+        return this.prisma.task.findMany({ include: { board: true, links: true } });
     }
     getTask(id) {
-        return this.prisma.task.findUnique({ where: { id }, include: { board: true } });
+        return this.prisma.task.findUnique({ where: { id }, include: { board: true, links: true } });
     }
     createTask(createTaskDto) {
         return this.prisma.task.create({
@@ -34,29 +34,47 @@ let TasksService = exports.TasksService = class TasksService {
                 deadline: createTaskDto.deadline,
                 boardId: createTaskDto.boardId
             },
-            include: { board: true }
+            include: { board: true, links: true }
         });
     }
-    updateTask(updateTaskDto) {
-        return this.prisma.task.update({
-            where: {
-                id: updateTaskDto.id
-            },
-            data: {
-                title: updateTaskDto.title,
-                details: updateTaskDto.details,
-                img: updateTaskDto.img,
-                links: {
-                    set: updateTaskDto.links
+    async updateTask(updateTaskDto) {
+        if (updateTaskDto?.links) {
+            const links = updateTaskDto?.links ? updateTaskDto?.links : [];
+            await this.prisma.taskLink.deleteMany({ where: { taskId: updateTaskDto.id } });
+            return this.prisma.task.update({
+                where: {
+                    id: updateTaskDto.id
                 },
-                deadline: updateTaskDto.deadline,
-                completed: updateTaskDto.completed
-            },
-            include: { board: true }
-        });
+                data: {
+                    title: updateTaskDto.title,
+                    details: updateTaskDto.details,
+                    img: updateTaskDto.img,
+                    links: {
+                        createMany: { data: links }
+                    },
+                    deadline: updateTaskDto.deadline,
+                    completed: updateTaskDto.completed
+                },
+                include: { board: true, links: true }
+            });
+        }
+        else {
+            return this.prisma.task.update({
+                where: {
+                    id: updateTaskDto.id
+                },
+                data: {
+                    title: updateTaskDto.title,
+                    details: updateTaskDto.details,
+                    img: updateTaskDto.img,
+                    deadline: updateTaskDto.deadline,
+                    completed: updateTaskDto.completed
+                },
+                include: { board: true, links: true }
+            });
+        }
     }
     deleteTask(id) {
-        this.prisma.taskLink.deleteMany({ where: { taskId: id } });
         return this.prisma.task.delete({ where: { id } });
     }
     getTaskLinks(taskId) {

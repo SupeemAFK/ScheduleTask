@@ -1,13 +1,28 @@
+//environments
+import { environment } from '../environments/environment.development';
+
+//Modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from '@auth0/auth0-angular';
+
+//Component
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './core/layout/navbar/navbar.component';
-import { AuthModule } from '@auth0/auth0-angular';
-import { UserService } from './core/services/user.service';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+
+//Firebase
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage'
+
+
+//Service
+import { UserAPIService } from './core/services/api/userAPI.service';
+import { TaskAPIService } from './core/services/api/taskAPI.service';
+import { BoardAPIService } from './core/services/api/boardAPI.service';
+import { UserService } from './core/services/user.service';
+import { TaskService } from './core/services/task.service';
 
 @NgModule({
   declarations: [
@@ -19,24 +34,30 @@ import { getStorage, provideStorage } from '@angular/fire/storage'
     AppRoutingModule,
     NavbarComponent,
     AuthModule.forRoot({
-      domain: 'dev-odtnb8tlsws7figa.us.auth0.com',
-      clientId: 'tZnvGlEddO2BTV6ZRfhcJknBAQwo3Ua5',
+      domain: environment.auth0_domain,
+      clientId: environment.auth0_clientId,
       authorizationParams: {
         redirect_uri: window.location.origin
       }
     }),
     provideFirebaseApp(() => initializeApp({
-      apiKey: "AIzaSyD_q9UtBw5cP2FeeN7qx834j1KqEbFT_VU",
-      authDomain: "schedule-task-b1b2b.firebaseapp.com",
-      projectId: "schedule-task-b1b2b",
-      storageBucket: "schedule-task-b1b2b.appspot.com",
-      messagingSenderId: "485999051787",
-      appId: "1:485999051787:web:e732c333be55352759f30e",
-      measurementId: "G-LLTWEXT9YT"
+      apiKey: environment.apiKey,
+      authDomain: environment.authDomain,
+      projectId: environment.projectId,
+      storageBucket: environment.storageBucket,
+      messagingSenderId: environment.messagingSenderId,
+      appId: environment.appId,
+      measurementId: environment.measurementId
     })),
     provideStorage(() => getStorage()),
   ],
-  providers: [UserService],
+  providers: [
+    UserAPIService, 
+    TaskAPIService,
+    BoardAPIService,
+    UserService, 
+    TaskService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

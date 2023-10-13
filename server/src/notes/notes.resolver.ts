@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Note } from './models/note.model'
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/createNoteDto';
@@ -36,9 +36,4 @@ export class NotesResolver {
     async deleteNote(@Args('id') id: number) {
         return await this.noteService.deleteNote(id);
     }   
-
-    @ResolveField()
-    async links(@Parent() note: Note) {
-        return await this.noteService.getNoteLinks(note.id);
-    }
 }

@@ -1,32 +1,99 @@
-<div class="bg-green-500 rounded-md">
-    <div>
-        <div class="overflow-hidden rounded-t-md">
-            <img class="w-full object-cover rounded-t-md" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Kmitl.jpg"  alt="" />
-        </div>
-    </div>
-    <div class="p-5">
-        <div>
-            <h1 class="font-semibold text-lg">COM-SCI KMITL</h1>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-        </div>
-        <div class="mt-5">
-            <h1 class="font-semibold text-lg">Schedule</h1>
-            <p>Current Date: 3 September 2023</p>
-            <p>Deadline: 3 September 2023</p>
-            <p>Timeleft: 5 days</p>
-        </div>
-        <div class="mt-5">
-            <h1 class="font-semibold text-lg">Related</h1>
-            <div class="flex">
-                <p>Admission: </p>
-                <a class="text-blue-500 underline break-all cursor-pointer">https://new.reg.kmitl.ac.th/admission/#/</a>
+<h1 class="text-white font-semibold text-lg">Date {{ dateTask.deadline }}</h1>
+    <div class="flex flex-wrap">
+        <div class="w-64 mr-5 mt-5" *ngFor="let task of dateTask.tasks">
+            <div class="bg-white rounded-md relative">
+                <div *ngIf="!edit; else elseBlock;">
+                    <div class="absolute top-2 right-2">
+                        <div class="flex items-center">
+                            <button (click)="deleteTask()" class="bg-red-500 text-white rounded-md text-xs p-1 px-2">Del</button>
+                            <button (click)="changeEdit()" class="bg-yellow-500 text-white rounded-md text-xs p-1 px-2 ml-1">Edit</button>
+                        </div>  
+                    </div>
+                    <div *ngIf="task.img">
+                        <div class="overflow-hidden rounded-t-md max-h-36">
+                            <img class="w-full object-cover rounded-t-md" [src]="task.img" [alt]="task.title" />
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div>
+                            <h1 class="font-semibold text-lg">{{ task.title }}</h1>
+                            <p>{{ task.details }}</p>
+                        </div>
+                        <div class="mt-5">
+                            <h1 class="font-semibold text-lg">Schedule</h1>
+                            <p>Current Date: {{ currentDate }}</p>
+                            <p>Deadline: {{ deadline  }}</p>
+                            <p>Timeleft: <span class="text-red-500 font-semibold">{{ diff }}</span></p>
+                        </div>
+                        <div class="mt-5" *ngIf="task.links.length > 0">
+                            <h1 class="font-semibold text-lg">Related</h1>
+                            <div>
+                                <div class="flex items-center" *ngFor="let link of task.links">
+                                    <p>{{ link.title }}: </p>
+                                    <a [href]="link.link" target="_blank" class="text-blue-500 underline break-all cursor-pointer">{{ link.link }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <div class="flex items-center justify-end">
+                                <input checked id="checked-checkbox" type="checkbox" [checked]="task.completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checked-checkbox" class="ml-2 text-lg font-medium">Completed</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #elseBlock>
+                    <div>
+                        <div class="absolute top-2 right-2">
+                            <div class="flex items-center">
+                                <button (click)="deleteTask()" class="bg-red-500 text-white rounded-md text-xs p-1 px-2">Del</button>
+                                <button (click)="changeEdit()" class="bg-yellow-500 text-white rounded-md text-xs p-1 px-2 ml-1">Edit</button>
+                            </div>  
+                        </div>
+                        <div *ngIf="task.img">
+                            <div class="overflow-hidden rounded-t-md max-h-36">
+                                <img class="w-full object-cover rounded-t-md" [src]="task.img" [alt]="task.title" />
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div>
+                                <input type="text" name="title" class="rounded-md w-full p-1 border-2 border-black outline-none" [value]="task.title" />
+                                <input type="text" name="details" class="rounded-md w-full p-1 border-2 border-black outline-none" [value]="task.details" />
+                            </div>
+                            <div class="mt-5">
+                                <h1 class="font-semibold text-lg">Schedule</h1>
+                                <p>Current Date: {{ currentDate }}</p>
+                                <p>Deadline: {{ deadline  }}</p>
+                                <p>Timeleft: <span class="text-red-500 font-semibold">{{ diff }}</span></p>
+                            </div>
+                            <div class="mt-5" *ngIf="task.links.length > 0">
+                                <h1 class="font-semibold text-lg">Related</h1>
+                                <div>
+                                    <div class="flex">
+                                        <input type="text" name="title" class="rounded-md w-full p-1 border-2 border-black outline-none" />
+                                        <input type="text" name="link" class="rounded-md w-full p-1 border-2 border-black outline-none" />
+                                    </div>
+                                    <button class="bg-green-500 text-white rounded-md p-2">Add link+</button>
+                                </div>
+                                <div>
+                                    <div class="relative" *ngFor="let link of task.links">
+                                        <button class="bg-red-500 text-white absolute top-0 right-0 rounded-[50%] w-5 h-5 text-xs">X</button>
+                                        <div class="flex items-center">
+                                            <p>{{ link.title }}: </p>
+                                            <a [href]="link.link" target="_blank" class="text-blue-500 underline break-all cursor-pointer">{{ link.link }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-5">
+                                <div class="flex items-center justify-end">
+                                    <input checked id="checked-checkbox" type="checkbox" [checked]="task.completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="checked-checkbox" class="ml-2 text-lg font-medium">Completed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
         </div>
-        <div class="mt-5">
-            <div class="flex items-center justify-end">
-                <input checked id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                <label for="checked-checkbox" class="ml-2 text-lg font-medium">Completed</label>
-            </div>
-        </div>
     </div>
-</div>

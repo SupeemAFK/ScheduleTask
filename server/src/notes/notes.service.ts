@@ -8,14 +8,14 @@ export class NotesService {
     constructor (private prismaService: PrismaService) {}
 
     getNotes() {
-        return this.prismaService.note.findMany({ include: { links: true, board: true } });
+        return this.prismaService.note.findMany({ include: { links: true, board: true, } });
     }
 
     getNote(id) {
         return this.prismaService.note.findUnique({ where: { id }, include: { links: true, board: true } });
     }
 
-    async createNote(createNoteDto: CreateNoteDto) {
+    createNote(createNoteDto: CreateNoteDto) {
         return this.prismaService.note.create({
             data: {
                 title: createNoteDto.title,
@@ -29,7 +29,7 @@ export class NotesService {
         })
     }
 
-    async updateNote(updateNoteDto: UpdateNoteDto) {
+    updateNote(updateNoteDto: UpdateNoteDto) {
         return this.prismaService.note.update({
             where: { id: updateNoteDto.id },
             data: {

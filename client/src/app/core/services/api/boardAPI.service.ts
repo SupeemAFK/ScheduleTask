@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from "src/environments/environment.development";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -8,26 +9,25 @@ const httpOptions = {
 };
 
 @Injectable()
-export class BoardService {
-    private configUrl = 'http://localhost:3000/graphql';
-
+export class BoardAPIService {
+    private configUrl = environment.apiUrl;
     constructor (private readonly http: HttpClient) {}
 
     getBoards() {
         const query = `
-            query {
-                getBoards {
-                    id
-                    title
-                    img
-                    createdAt
-                    user {
-                        id
-                        name
-                        avatar
-                    }
-                }
-            }`;
+        query {
+          getBoards {
+            id
+            title
+            details
+            createdAt
+            user {
+              id
+              username
+              avatar
+            }
+          }
+        }`;
   
       return this.http.post(
         this.configUrl,
@@ -57,6 +57,12 @@ export class BoardService {
                 completed
                 createdAt
               }
+              user {
+                id
+                username
+                avatar
+              }
+              createdAt
             }
           }`;
 
@@ -67,17 +73,17 @@ export class BoardService {
         );
     }
 
-    createBoard(createBoardInput: { title: string, details: string, img: string, userId: number }) {
+    createBoard(createBoardInput: { title: string, details: string, userId: number }) {
         const query = `
         mutation {
             createBoard(newBoardData: { 
               title:"${createBoardInput.title}", 
               details:"${createBoardInput.details}", 
-              img: "${createBoardInput.img}", 
               userId: ${createBoardInput.userId} 
             }) {
               id
               title
+              details
             }
           }`;
 
@@ -88,14 +94,19 @@ export class BoardService {
         );
     }
 
-    updateBoard(updateBoardInput: { id: number, title: string, img: string }) {
+    updateBoard(updateBoardInput: { id: number, title: string, details: string }) {
         const query = `
-            mutation updateBoard(updateBoardInput: ${updateBoardInput}) {
-                id
-                title
-                img
-                createdAt
-            }`;
+        mutation {
+            updateBoard(updateBoardData:{ 
+                id: ${updateBoardInput.id}, 
+                title: "${updateBoardInput.title}", 
+                details: "${updateBoardInput.details}" 
+            }) {
+              id
+              title
+              details
+            }
+          }`;
 
         return this.http.post(
             this.configUrl,

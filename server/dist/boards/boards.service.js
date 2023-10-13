@@ -17,20 +17,19 @@ let BoardsService = exports.BoardsService = class BoardsService {
         this.prisma = prisma;
     }
     getBoards() {
-        return this.prisma.board.findMany({ include: { user: true, tasks: true, notes: true } });
+        return this.prisma.board.findMany({ include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } });
     }
     getBoard(id) {
-        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: true, notes: true } });
+        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } });
     }
     createBoard(createBoardInput) {
         return this.prisma.board.create({
             data: {
                 title: createBoardInput.title,
                 details: createBoardInput.details,
-                img: createBoardInput.img,
                 userId: createBoardInput.userId
             },
-            include: { user: true, tasks: true, notes: true }
+            include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } }
         });
     }
     updateBoard(updateBoardInput) {
@@ -40,13 +39,13 @@ let BoardsService = exports.BoardsService = class BoardsService {
             },
             data: {
                 title: updateBoardInput.title,
-                img: updateBoardInput.img
+                details: updateBoardInput.details
             },
-            include: { user: true, tasks: true, notes: true }
+            include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } }
         });
     }
     deleteBoard(id) {
-        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: true, notes: true } });
+        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } });
     }
 };
 exports.BoardsService = BoardsService = __decorate([

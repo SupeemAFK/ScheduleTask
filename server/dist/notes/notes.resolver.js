@@ -41,9 +41,6 @@ let NotesResolver = exports.NotesResolver = class NotesResolver {
     async deleteNote(id) {
         return await this.noteService.deleteNote(id);
     }
-    async links(note) {
-        return await this.noteService.getNoteLinks(note.id);
-    }
 };
 __decorate([
     (0, graphql_1.Query)(returns => [note_model_1.Note]),
@@ -79,13 +76,6 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], NotesResolver.prototype, "deleteNote", null);
-__decorate([
-    (0, graphql_1.ResolveField)(),
-    __param(0, (0, graphql_1.Parent)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [note_model_1.Note]),
-    __metadata("design:returntype", Promise)
-], NotesResolver.prototype, "links", null);
 exports.NotesResolver = NotesResolver = __decorate([
     (0, graphql_1.Resolver)(of => note_model_1.Note),
     __metadata("design:paramtypes", [notes_service_1.NotesService])

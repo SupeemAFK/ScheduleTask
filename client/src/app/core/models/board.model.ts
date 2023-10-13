@@ -3,8 +3,8 @@ import { Task } from "./task.model";
 
 export interface Board {
     id: number;
-    img: string;
     title: string;
+    details: string;
     createdAt: Date;
     user: User;
     tasks: Task[];

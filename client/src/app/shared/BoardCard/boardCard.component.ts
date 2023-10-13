@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Board } from 'src/app/core/models/board.model';
+import * as moment from 'moment';
 
 @Component({
   imports: [RouterLink],
@@ -8,6 +9,11 @@ import { Board } from 'src/app/core/models/board.model';
   templateUrl: './boardCard.component.html',
   standalone: true,
 })
-export class BoardCardComponent {
+export class BoardCardComponent implements OnChanges {
   @Input() board!: Board;
+  createdAt = "";
+
+  ngOnChanges(): void {
+    this.createdAt = moment(this.board.createdAt).fromNow();
+  }
 }

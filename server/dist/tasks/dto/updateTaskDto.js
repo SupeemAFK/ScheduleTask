@@ -14,10 +14,6 @@ const graphql_1 = require("@nestjs/graphql");
 let UpdateTaskLinkInput = class UpdateTaskLinkInput {
 };
 __decorate([
-    (0, graphql_1.Field)(type => graphql_1.Int),
-    __metadata("design:type", Number)
-], UpdateTaskLinkInput.prototype, "id", void 0);
-__decorate([
     (0, graphql_1.Field)(type => String),
     __metadata("design:type", String)
 ], UpdateTaskLinkInput.prototype, "title", void 0);
@@ -25,10 +21,6 @@ __decorate([
     (0, graphql_1.Field)(type => String),
     __metadata("design:type", String)
 ], UpdateTaskLinkInput.prototype, "link", void 0);
-__decorate([
-    (0, graphql_1.Field)(type => graphql_1.Int),
-    __metadata("design:type", Number)
-], UpdateTaskLinkInput.prototype, "taskId", void 0);
 UpdateTaskLinkInput = __decorate([
     (0, graphql_1.InputType)()
 ], UpdateTaskLinkInput);
@@ -51,7 +43,7 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateTaskDto.prototype, "details", void 0);
 __decorate([
-    (0, graphql_1.Field)(type => [UpdateTaskLinkInput]),
+    (0, graphql_1.Field)(type => [UpdateTaskLinkInput], { nullable: true }),
     __metadata("design:type", Array)
 ], UpdateTaskDto.prototype, "links", void 0);
 __decorate([
