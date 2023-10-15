@@ -27,11 +27,20 @@ export class Task {
     @Field(type => String)
     details: string;
 
+    @Field(type => [String])
+    attachments: string[];
+
     @Field(type => [TaskLink])
     links: TaskLink[];
 
     @Field(type => Date)
-    deadline: Date;
+    start: Date;
+
+    @Field(type => Date)
+    end: Date;
+
+    @Field(type => Boolean)
+    allDay: boolean;
 
     @Field(type => Boolean)
     completed: boolean;

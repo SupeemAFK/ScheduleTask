@@ -9,8 +9,11 @@ export interface Task {
     title: string;
     details: string;
     img: string;
+    attachments: { name: string; download_url: string }[];
     links: TaskLink[]
-    deadline: Date;
+    start: Date;
+    end: Date;
+    allDay: boolean;
     completed: boolean
     createdAt: Date;
 }

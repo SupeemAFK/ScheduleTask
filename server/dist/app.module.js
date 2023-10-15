@@ -18,7 +18,6 @@ const node_path_1 = require("node:path");
 const tasks_module_1 = require("./tasks/tasks.module");
 const boards_module_1 = require("./boards/boards.module");
 const users_module_1 = require("./users/users.module");
-const notes_module_1 = require("./notes/notes.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -29,7 +28,10 @@ exports.AppModule = AppModule = __decorate([
                 driver: apollo_1.ApolloDriver,
                 autoSchemaFile: (0, node_path_1.join)(process.cwd(), 'src/schema.gql'),
             }),
-            prisma_module_1.PrismaModule, tasks_module_1.TasksModule, boards_module_1.BoardsModule, users_module_1.UsersModule, notes_module_1.NotesModule
+            prisma_module_1.PrismaModule,
+            tasks_module_1.TasksModule,
+            boards_module_1.BoardsModule,
+            users_module_1.UsersModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

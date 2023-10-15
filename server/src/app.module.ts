@@ -9,7 +9,6 @@ import { join } from 'node:path';
 import { TasksModule } from './tasks/tasks.module';
 import { BoardsModule } from './boards/boards.module';
 import { UsersModule } from './users/users.module';
-import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -18,7 +17,10 @@ import { NotesModule } from './notes/notes.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }), 
-    PrismaModule, TasksModule, BoardsModule, UsersModule, NotesModule
+    PrismaModule, 
+    TasksModule, 
+    BoardsModule, 
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],

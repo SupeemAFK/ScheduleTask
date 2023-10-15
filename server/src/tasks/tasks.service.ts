@@ -21,10 +21,13 @@ export class TasksService {
                 title: createTaskDto.title,
                 details: createTaskDto.details,
                 img: createTaskDto.img,
+                attachments: createTaskDto.attachments,
                 links: {
                     createMany: { data: createTaskDto.links }
                 },
-                deadline: createTaskDto.deadline,
+                start: createTaskDto.start,
+                end: createTaskDto.end,
+                allDay: createTaskDto.allDay,
                 boardId: createTaskDto.boardId
             },
             include: { board: true, links: true }
@@ -43,10 +46,13 @@ export class TasksService {
                     title: updateTaskDto.title,
                     details: updateTaskDto.details,
                     img: updateTaskDto.img,
+                    attachments: updateTaskDto.attachments,
                     links: { 
                         createMany: { data: links }
                     },
-                    deadline: updateTaskDto.deadline,
+                    start: updateTaskDto.start,
+                    end: updateTaskDto.end,
+                    allDay: updateTaskDto.allDay,
                     completed: updateTaskDto.completed
                 },
                 include: { board: true, links: true }
@@ -61,7 +67,9 @@ export class TasksService {
                     title: updateTaskDto.title,
                     details: updateTaskDto.details,
                     img: updateTaskDto.img,
-                    deadline: updateTaskDto.deadline,
+                    attachments: updateTaskDto.attachments,
+                    start: updateTaskDto.start,
+                    end: updateTaskDto.end,
                     completed: updateTaskDto.completed
                 },
                 include: { board: true, links: true }

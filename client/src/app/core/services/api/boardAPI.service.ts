@@ -20,6 +20,7 @@ export class BoardAPIService {
             id
             title
             details
+            attachments
             createdAt
             user {
               id
@@ -43,17 +44,21 @@ export class BoardAPIService {
               id
               title
               details
+              attachments
               tasks {
                 id
                 title
                 details
                 img
-                deadline
+                attachments
                 links {
                   id
                   title
                   link
                 }
+                start
+                end
+                allDay
                 completed
                 createdAt
               }
@@ -73,20 +78,22 @@ export class BoardAPIService {
         );
     }
 
-    createBoard(createBoardInput: { title: string, details: string, userId: number }) {
+    createBoard(createBoardInput: { title: string, details: string, attachments: string[], userId: number }) {
         const query = `
         mutation {
             createBoard(newBoardData: { 
               title:"${createBoardInput.title}", 
               details:"${createBoardInput.details}", 
+              attachments: ${JSON.stringify(createBoardInput.attachments)},
               userId: ${createBoardInput.userId} 
             }) {
               id
               title
               details
+              attachments
             }
           }`;
-
+          
         return this.http.post(
             this.configUrl,
             JSON.stringify({ query }),
@@ -94,17 +101,19 @@ export class BoardAPIService {
         );
     }
 
-    updateBoard(updateBoardInput: { id: number, title: string, details: string }) {
+    updateBoard(updateBoardInput: { id: number, title: string, attachments: string[], details: string }) {
         const query = `
         mutation {
             updateBoard(updateBoardData:{ 
                 id: ${updateBoardInput.id}, 
                 title: "${updateBoardInput.title}", 
-                details: "${updateBoardInput.details}" 
+                details: "${updateBoardInput.details}" ,
+                attachments: ${JSON.stringify(updateBoardInput.attachments)},
             }) {
               id
               title
               details
+              attachments
             }
           }`;
 

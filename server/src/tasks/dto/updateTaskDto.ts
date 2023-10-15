@@ -23,11 +23,20 @@ export class UpdateTaskDto {
     @Field(type => String)
     details: string;
 
+    @Field(type => [String])
+    attachments: string[];
+
     @Field(type => [UpdateTaskLinkInput], { nullable: true })
     links?: UpdateTaskLinkInput[];
 
     @Field(type => Date)
-    deadline: Date;
+    start: Date;
+
+    @Field(type => Date)
+    end: Date;
+
+    @Field(type => Boolean)
+    allDay: boolean;
 
     @Field(type => Boolean)
     completed: boolean;

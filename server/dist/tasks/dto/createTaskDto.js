@@ -39,13 +39,25 @@ __decorate([
     __metadata("design:type", String)
 ], CreateTaskDto.prototype, "details", void 0);
 __decorate([
+    (0, graphql_1.Field)(type => [String]),
+    __metadata("design:type", Array)
+], CreateTaskDto.prototype, "attachments", void 0);
+__decorate([
     (0, graphql_1.Field)(type => [CreateTaskLinkInput]),
     __metadata("design:type", Array)
 ], CreateTaskDto.prototype, "links", void 0);
 __decorate([
     (0, graphql_1.Field)(type => Date),
     __metadata("design:type", Date)
-], CreateTaskDto.prototype, "deadline", void 0);
+], CreateTaskDto.prototype, "start", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => Date),
+    __metadata("design:type", Date)
+], CreateTaskDto.prototype, "end", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => Boolean),
+    __metadata("design:type", Boolean)
+], CreateTaskDto.prototype, "allDay", void 0);
 __decorate([
     (0, graphql_1.Field)(type => graphql_1.Int),
     __metadata("design:type", Number)

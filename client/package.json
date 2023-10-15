@@ -26,6 +26,7 @@
     "@fullcalendar/interaction": "^6.1.9",
     "@fullcalendar/list": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
+    "@ng-icons/bootstrap-icons": "^25.4.0",
     "@ng-icons/core": "^25.4.0",
     "@ng-icons/heroicons": "^25.4.0",
     "angular-calendar": "^0.31.0",

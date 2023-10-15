@@ -1,10 +1,10 @@
 <div [class]='taskSidebarOpen ? "right-0 visible bg-neutral-800 fixed top-0 h-full mt-14 w-80 p-3 transition-all duration-300" : "right-[-21%] invisible bg-neutral-700 fixed top-0 h-full mt-14 w-80 p-3 transition-all duration-300"'>
     <div class="overflow-y-auto h-full">
         <div>
-            <h1 class="text-2xl font-semibold text-white"><span class="text-pink-400" *ngIf="isToday">Today</span> {{ deadline }}</h1>
+            <h1 class="text-2xl font-semibold text-white"><span class="text-pink-400" *ngIf="taskService.isSelectedDateToday()">Today</span> {{ taskService.selectedDateFormat() }}</h1>
         </div>
         <div *ngIf="userService?.currentUser?.id == taskService.board.user.id">
-            <div class="mt-2" *ngIf="selectedDate; else elseBlock;">
+            <div class="mt-2" *ngIf="taskService.selectedDate; else elseBlock;">
                 <button (click)="openCreateTask()" class="border-2 border-white p-2 rounded-md text-white w-full mt-1 hover:text-black hover:bg-white transition-all duration-300">Add task+</button>
             </div>
             <ng-template #elseBlock>
@@ -13,7 +13,7 @@
                 </div>
             </ng-template>
         </div>
-        <div class="mt-5" *ngFor="let task of taskService.filteredTasks(selectedDate)()">
+        <div class="mt-5" *ngFor="let task of taskService.filteredTasks(); index as i;">
             <app-sidebar-task-card [isOwner]="userService.currentUser?.id == taskService.board.user.id" [task]="task" />
         </div>
         <div class="mt-16"></div>
@@ -24,25 +24,52 @@
 </div>
 <div class="fixed w-full h-full z-50" *ngIf="isOpenCreateTask">
     <div (click)="closeCreateTaskBackground($event)" class="flex justify-center items-center w-full h-full z-50">
-        <div class="bg-neutral-800 p-5 relative flex flex-col w-96 rounded-md max-h-[36rem] overflow-y-auto">
+        <div class="bg-neutral-800 p-5 relative flex flex-col w-96 rounded-md h-[36rem] overflow-y-auto">
             <button (click)="closeCreateTask()" class="fixed top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white text-black rounded-[50%]">X</button>
             <h1 class="text-white text-lg">Create task</h1>
             <input [value]="createTaskInput.title" (change)="onChangeInput($event)" name="title" type="text" placeholder="title" class="mt-2 p-3 rounded-md w-full" />
-            <textarea [value]="createTaskInput.details" (change)="onChangeInput($event)" name="details" type="text" placeholder="details" class="mt-2 p-3 rounded-md w-full"></textarea>
+            <textarea [value]="createTaskInput.details" (change)="onChangeInput($event)" name="details" type="text" placeholder="details" class="min-h-[5rem] mt-2 p-3 rounded-md w-full"></textarea>
             <label class="mt-1">
-                <ng-icon class="cursor-pointer text-3xl text-neutral-400 hover:text-white" name="heroFolderPlus"></ng-icon>
-                <input (change)="onChangeFile($event)" name="img" type="file" placeholder="img" class="hidden" />
+                <ng-icon class="cursor-pointer text-3xl text-neutral-400 hover:text-white" name="heroPhoto"></ng-icon>
+                <input accept="image/*" (change)="onChangeFile($event)" name="img" type="file" placeholder="img" class="hidden" />
             </label>
-            <div class="mt-3 max-h-96 overflow-hidden" *ngIf="createTaskInput.img.url">
+            <div class="relative" *ngIf="createTaskInput.img.url">
+                <button (click)="changeFileToNone()" class="bg-black opacity-30 w-7 h-7 flex justify-center items-center absolute top-0 right-0 text-white rounded-[50%]">X</button>
                 <img class="object-cover w-full" [src]="createTaskInput.img.url" alt="file" />
             </div>
-            <div class="mt-2">
+            <div class="mt-5">
+                <div class="flex ">
+                    <div>
+                        <p class="text-white p-1">Start</p>
+                        <p class="text-white p-1 mt-2">End</p>
+                    </div>
+                    <div class="flex-1">
+                        <input (change)="onChangeInput($event)" [value]="taskService.selectedDateFormatDateTimeLocal()" class="p-1 rounded-md w-full" name="start" [type]='createTaskInput.allDay ? "date" : "datetime-local"' />
+                        <input (change)="onChangeInput($event)" class="p-1 rounded-md mt-2 w-full" name="end" [type]='createTaskInput.allDay ? "date" : "datetime-local"' />
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <p class="text-white p-1">All day</p>
+                    <input [checked]="createTaskInput.allDay" (change)="onChangeInput($event)" name="allDay" class="rounded-md text-blue-500 w-5 h-5" type="checkbox" />
+                </div>
+            </div>
+            <div class="mt-5">
+                <h1 class="text-white">Add attachments</h1>
+                <label class="mt-1">
+                    <ng-icon class="cursor-pointer text-3xl text-neutral-400 hover:text-white" name="heroFolder"></ng-icon>
+                    <input multiple (change)="onChangeAttachments($event)" type="file" class="hidden" />
+                </label>            
+                <div class="text-white">
+                    <p *ngFor="let attachment of createTaskInput.attachments">{{ attachment.name }}</p>
+                </div>
+            </div>
+            <div class="mt-5">
                 <h1 class="text-white">Add link</h1>
                 <div class="flex items-center">
                     <input [value]="createLinkInput.title" (change)="onChangeInputLink($event)" name="title" type="text" placeholder="title" class="p-1 rounded-md w-full" />
                     <input [value]="createLinkInput.link" (change)="onChangeInputLink($event)" name="link" type="text" placeholder="link" class="p-1 rounded-md w-full" />
                 </div>
-                <button (click)="createLink()" class="bg-green-500 text-white rounded-[50%] w-7 h-7 flex justify-center items-center">+</button>
+                <button (click)="createLink()" class="mt-1 bg-green-500 text-white rounded-md p-1 text-xs flex justify-center items-center">Add link +</button>
                 <div>
                     <div class="relative" *ngFor="let link of links; index as i" >
                         <button (click)="removeLink(i)" class="bg-red-500 text-white absolute top-0 right-0 rounded-[50%] w-5 h-5 text-xs">X</button>
@@ -54,7 +81,16 @@
                 </div>
             </div>
             <div class="flex justify-end items-center mt-2">
-                <button (click)="createTask()" class="p-3 border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 rounded-md">Create</button>
+                <button *ngIf="taskService.createTaskLoading; else elseBlock;" disabled type="button" class="py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center">
+                    <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
+                    </svg>
+                    Loading...
+                </button>                
+                <ng-template #elseBlock>
+                    <button (click)="createTask()" class="py-2.5 px-5 text-sm border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 rounded-md">Create</button>
+                </ng-template>
             </div>
         </div>
     </div>

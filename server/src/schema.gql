@@ -10,35 +10,20 @@ type User {
   boards: [Board!]!
 }
 
-type NoteLink {
-  id: Int!
-  title: String!
-  link: String!
-}
-
-type Note {
+type Board {
   id: Int!
   title: String!
   details: String!
-  links: [NoteLink!]!
+  attachments: [String!]!
   createdAt: DateTime!
-  board: Board!
+  tasks: [Task!]!
+  user: User!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type Board {
-  id: Int!
-  title: String!
-  details: String!
-  createdAt: DateTime!
-  notes: Note!
-  tasks: [Task!]!
-  user: User!
-}
 
 type TaskLink {
   id: Int!
@@ -51,8 +36,11 @@ type Task {
   title: String!
   img: String!
   details: String!
+  attachments: [String!]!
   links: [TaskLink!]!
-  deadline: DateTime!
+  start: DateTime!
+  end: DateTime!
+  allDay: Boolean!
   completed: Boolean!
   createdAt: DateTime!
   board: Board!
@@ -67,8 +55,6 @@ type Query {
   getUsers: [User!]!
   getUserById(id: Float!): User!
   getUserByEmail(email: String!): User!
-  getNotes: [Note!]!
-  getNote(id: Float!): Note!
 }
 
 type Mutation {
@@ -80,17 +66,17 @@ type Mutation {
   deleteBoard(id: Float!): Board!
   createUser(createUserData: CreateUserDto!): User
   updateUser(updateUserData: UpdateUserDto!): User!
-  createNote(newNoteData: CreateNoteDto!): Note!
-  updateNote(updateNoteData: UpdateNoteDto!): Note!
-  deleteNote(id: Float!): Note!
 }
 
 input CreateTaskDto {
   title: String!
   img: String!
   details: String!
+  attachments: [String!]!
   links: [CreateTaskLinkInput!]!
-  deadline: DateTime!
+  start: DateTime!
+  end: DateTime!
+  allDay: Boolean!
   boardId: Int!
 }
 
@@ -104,8 +90,11 @@ input UpdateTaskDto {
   title: String!
   img: String!
   details: String!
+  attachments: [String!]!
   links: [UpdateTaskLinkInput!]
-  deadline: DateTime!
+  start: DateTime!
+  end: DateTime!
+  allDay: Boolean!
   completed: Boolean!
 }
 
@@ -117,6 +106,7 @@ input UpdateTaskLinkInput {
 input CreateBoardInput {
   title: String!
   details: String!
+  attachments: [String!]!
   userId: Int!
 }
 
@@ -124,6 +114,7 @@ input UpdateBoardInput {
   id: Int!
   title: String!
   details: String!
+  attachments: [String!]!
 }
 
 input CreateUserDto {
@@ -137,25 +128,4 @@ input UpdateUserDto {
   id: Int!
   name: String!
   avatar: String!
-}
-
-input CreateNoteDto {
-  title: String!
-  details: String!
-  links: [NoteLinkInput!]!
-  boardId: Int!
-}
-
-input NoteLinkInput {
-  id: Int!
-  title: String!
-  link: String!
-  noteId: Int!
-}
-
-input UpdateNoteDto {
-  id: Int!
-  title: String!
-  details: String!
-  links: [NoteLinkInput!]!
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from './core/services/user.service'
+import { UserStoreService } from './core/services/userStore.service'
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { UserService } from './core/services/user.service'
 })
 export class AppComponent implements OnInit {
   title = 'todo-app';
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserStoreService) {}
 
   ngOnInit(): void {
     this.userService.setCurrentUser();

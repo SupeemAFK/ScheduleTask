@@ -7,8 +7,11 @@ export declare class UpdateTaskDto {
     title: string;
     img: string;
     details: string;
+    attachments: string[];
     links?: UpdateTaskLinkInput[];
-    deadline: Date;
+    start: Date;
+    end: Date;
+    allDay: boolean;
     completed: boolean;
 }
 export {};

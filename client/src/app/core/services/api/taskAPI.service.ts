@@ -13,7 +13,7 @@ export class TaskAPIService {
     private configUrl = environment.apiUrl;
     constructor (private readonly http: HttpClient) {}
 
-    createTask(createTaskInput: { title: string, details: string, img: string, links: { title: string, link: string }[], deadline: Date, boardId: number }) {
+    createTask(createTaskInput: { title: string, details: string, img: string, attachments: string[], links: { title: string, link: string }[], start: Date, end: Date, allDay: boolean, boardId: number }) {
         const query = `
         mutation {
             createTask(newTodoData: { 
@@ -21,14 +21,20 @@ export class TaskAPIService {
               img: "${createTaskInput.img}",
               details: "${createTaskInput.details}",
               links: ${JSON.stringify(createTaskInput.links).replace(/"([^"]+)":/g, '$1:')},
-              deadline: "${createTaskInput.deadline}",
+              attachments: ${JSON.stringify(createTaskInput.attachments)},
+              start: "${createTaskInput.start}",
+              end: "${createTaskInput.end}",
+              allDay: ${createTaskInput.allDay},
               boardId: ${createTaskInput.boardId}
             }) {
               id
               title
               details
               img
-              deadline
+              attachments
+              start
+              end
+              allDay
               createdAt
               completed
               links {
@@ -45,22 +51,28 @@ export class TaskAPIService {
         );
     }
 
-    updateTask(updateTodoInput: { id: number, title: string, details: string, img: string, links?: { title: string, link: string }[], deadline: Date, completed: boolean }) {
+    updateTask(updateTaskInput: { id: number, title: string, details: string, img: string, attachments: string[], links?: { title: string, link: string }[], start: Date, end: Date, allDay: boolean, completed: boolean }) {
       let query = `
         mutation {
             updateTask(updateTodoData: {
-              id: ${updateTodoInput.id}
-              title: "${updateTodoInput.title}",
-              img: "${updateTodoInput.img}",
-              details:"${updateTodoInput.details}",
-              deadline: "${updateTodoInput.deadline}",
-              completed: ${updateTodoInput.completed}
+              id: ${updateTaskInput.id}
+              title: "${updateTaskInput.title}",
+              img: "${updateTaskInput.img}",
+              attachments: ${JSON.stringify(updateTaskInput.attachments)},
+              details:"${updateTaskInput.details}",
+              start: "${updateTaskInput.start}",
+              end: "${updateTaskInput.end}",
+              allDay: ${updateTaskInput.allDay},
+              completed: ${updateTaskInput.completed}
             }) {
                 id
                 title
                 details
                 img
-                deadline
+                attachments
+                start
+                end
+                allDay
                 createdAt
                 completed
                 links {
@@ -70,23 +82,29 @@ export class TaskAPIService {
                 }
               }
           }`;
-      if (updateTodoInput.links) {
+      if (updateTaskInput.links) {
         query = `
         mutation {
             updateTask(updateTodoData: {
-              id: ${updateTodoInput.id}
-              title: "${updateTodoInput.title}",
-              img: "${updateTodoInput.img}",
-              details:"${updateTodoInput.details}",
-              links: ${JSON.stringify(updateTodoInput.links).replace(/"([^"]+)":/g, '$1:')},
-              deadline: "${updateTodoInput.deadline}",
-              completed: ${updateTodoInput.completed}
+              id: ${updateTaskInput.id}
+              title: "${updateTaskInput.title}",
+              img: "${updateTaskInput.img}",
+              details:"${updateTaskInput.details}",
+              links: ${JSON.stringify(updateTaskInput.links).replace(/"([^"]+)":/g, '$1:')},
+              attachments: ${JSON.stringify(updateTaskInput.attachments)},
+              start: "${updateTaskInput.start}",
+              end: "${updateTaskInput.end}",
+              allDay: ${updateTaskInput.allDay},
+              completed: ${updateTaskInput.completed}
             }) {
                 id
                 title
                 details
                 img
-                deadline
+                attachments
+                start
+                end
+                allDay
                 createdAt
                 completed
                 links {

@@ -7,7 +7,7 @@ import { BoardAPIService } from "./api/boardAPI.service";
 @Injectable({
     providedIn: "root"
 })
-export class UserService {
+export class UserStoreService {
     currentUser: User | null = null;
     constructor(public auth: AuthService, private userAPIService: UserAPIService, private boardAPIService: BoardAPIService) {}
 
@@ -52,11 +52,12 @@ export class UserService {
           })
     }
 
-    createCurrentUserBoard(createBoardData: { title: string, details: string }) {
+    createCurrentUserBoard(createBoardData: { title: string, details: string, attachments: string[] }) {
       if (this.currentUser) {
         this.boardAPIService.createBoard({ 
           title: createBoardData.title,
           details: createBoardData.details,
+          attachments: createBoardData.attachments,
           userId: this.currentUser.id
         })
         .subscribe((data: any) => {
@@ -67,12 +68,13 @@ export class UserService {
       }
     }
 
-    updateCurrentUserBoard(updateBoardData: { id: number, title: string, details: string }) {
+    updateCurrentUserBoard(updateBoardData: { id: number, title: string, details: string, attachments: string[] }) {
       if (this.currentUser) {
         this.boardAPIService.updateBoard({ 
           id: updateBoardData.id,
           title: updateBoardData.title,
-          details: updateBoardData.details
+          details: updateBoardData.details,
+          attachments: updateBoardData.attachments
         })
         .subscribe((data: any) => {
           if (data?.data?.updateBoard && this.currentUser?.boards) {

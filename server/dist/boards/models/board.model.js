@@ -13,7 +13,6 @@ exports.Board = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const task_model_1 = require("../../tasks/models/task.model");
 const user_model_1 = require("../../users/models/user.model");
-const note_model_1 = require("../../notes/models/note.model");
 let Board = exports.Board = class Board {
 };
 __decorate([
@@ -29,13 +28,13 @@ __decorate([
     __metadata("design:type", String)
 ], Board.prototype, "details", void 0);
 __decorate([
+    (0, graphql_1.Field)(type => [String]),
+    __metadata("design:type", Array)
+], Board.prototype, "attachments", void 0);
+__decorate([
     (0, graphql_1.Field)(type => Date),
     __metadata("design:type", Date)
 ], Board.prototype, "createdAt", void 0);
-__decorate([
-    (0, graphql_1.Field)(type => note_model_1.Note),
-    __metadata("design:type", Array)
-], Board.prototype, "notes", void 0);
 __decorate([
     (0, graphql_1.Field)(type => [task_model_1.Task]),
     __metadata("design:type", Array)

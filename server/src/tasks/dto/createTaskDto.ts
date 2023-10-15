@@ -20,12 +20,21 @@ export class CreateTaskDto {
     @Field(type => String)
     details: string;
 
+    @Field(type => [String])
+    attachments: string[];
+
     @Field(type => [CreateTaskLinkInput])
     links: CreateTaskLinkInput[];
 
     @Field(type => Date)
-    deadline: Date;
+    start: Date;
 
+    @Field(type => Date)
+    end: Date;
+
+    @Field(type => Boolean)
+    allDay: boolean;
+    
     @Field(type => Int)
     boardId: number;
 }

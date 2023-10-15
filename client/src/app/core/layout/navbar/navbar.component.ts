@@ -3,7 +3,7 @@ import { RouterLink } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
-import { UserService } from '../../services/user.service';
+import { UserStoreService } from '../../services/userStore.service';
 
 @Component({
   imports: [RouterLink, CommonModule],
@@ -12,5 +12,5 @@ import { UserService } from '../../services/user.service';
   standalone: true,
 })
 export class NavbarComponent {
-  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService, public userService: UserService) {}
+  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService, public userService: UserStoreService) {}
 }

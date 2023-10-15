@@ -21,20 +21,10 @@ model Board {
   title String
   details String
   createdAt DateTime @default(now()) @db.Timestamptz(3)
-  notes Note[]
+  attachments String[]
   tasks Task[]
   user User @relation(fields: [userId], references: [id])
   userId Int
-}
-
-model Note {
-  id Int @id @default(autoincrement())
-  title String
-  details String
-  links NoteLink[]
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  boardId Int 
-  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model Task {
@@ -42,20 +32,15 @@ model Task {
   title String
   details String
   img String
+  attachments String[]
   links TaskLink[]
-  deadline DateTime
+  start DateTime
+  end DateTime
+  allDay Boolean
   completed Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   boardId Int 
   board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
-}
-
-model NoteLink {
-  id Int @id @default(autoincrement())
-  title String
-  link String
-  noteId Int
-  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
 }
 
 model TaskLink {

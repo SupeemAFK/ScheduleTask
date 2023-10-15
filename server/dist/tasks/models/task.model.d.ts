@@ -9,8 +9,11 @@ export declare class Task {
     title: string;
     img: string;
     details: string;
+    attachments: string[];
     links: TaskLink[];
-    deadline: Date;
+    start: Date;
+    end: Date;
+    allDay: boolean;
     completed: boolean;
     createdAt: Date;
     board: Board;

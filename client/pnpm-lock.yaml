@@ -53,6 +53,9 @@ dependencies:
   '@fullcalendar/timegrid':
     specifier: ^6.1.9
     version: 6.1.9(@fullcalendar/core@6.1.9)
+  '@ng-icons/bootstrap-icons':
+    specifier: ^25.4.0
+    version: 25.4.0
   '@ng-icons/core':
     specifier: ^25.4.0
     version: 25.4.0
@@ -2656,6 +2659,12 @@ packages:
 
   /@mattlewis92/dom-autoscroller@2.4.2:
     resolution: {integrity: sha512-YbrUWREPGEjE/FU6foXcAT1YbVwqD/jkYnY1dFb0o4AxtP3s4xKBthlELjndZih8uwsDWgQZx1eNskRNe2BgZQ==}
+    dev: false
+
+  /@ng-icons/bootstrap-icons@25.4.0:
+    resolution: {integrity: sha512-J+25TKglB2aiMNES8MNJOxIE34v6AP4XUeOZTrzLI9aDGcBGgsdsn+UwWJmIzwKSlp0E44YLHKDEDm5CvhzTag==}
+    dependencies:
+      tslib: 2.6.2
     dev: false
 
   /@ng-icons/core@25.4.0:

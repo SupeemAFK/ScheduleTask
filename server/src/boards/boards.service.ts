@@ -8,11 +8,11 @@ export class BoardsService {
     constructor(private readonly prisma: PrismaService) {}
 
     getBoards() {
-        return this.prisma.board.findMany({ include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } })
+        return this.prisma.board.findMany({ include: { user: true, tasks: { include: { links: true } } } })
     }
 
     getBoard(id: number) {
-        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } })
+        return this.prisma.board.findUnique({ where: { id }, include: { user: true, tasks: { include: { links: true } } } })
     }
 
     createBoard(createBoardInput: CreateBoardInput) {
@@ -20,9 +20,10 @@ export class BoardsService {
             data: { 
                 title: createBoardInput.title,
                 details: createBoardInput.details,
+                attachments: createBoardInput.attachments,
                 userId: createBoardInput.userId
             },
-            include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } }
+            include: { user: true, tasks: { include: { links: true } } }
         })
     }
 
@@ -33,13 +34,14 @@ export class BoardsService {
             },
             data: {
                 title: updateBoardInput.title,
-                details: updateBoardInput.details
+                details: updateBoardInput.details,
+                attachments: updateBoardInput.attachments
             },
-            include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } }
+            include: { user: true, tasks: { include: { links: true } } }
          })
     }
 
     deleteBoard(id: number) {
-        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: { include: { links: true } }, notes: { include: { links: true } } } })
+        return this.prisma.board.delete({ where: { id }, include: { user: true, tasks: { include: { links: true } } } })
     }
 }

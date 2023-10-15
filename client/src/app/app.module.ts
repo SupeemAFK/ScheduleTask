@@ -21,8 +21,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage'
 import { UserAPIService } from './core/services/api/userAPI.service';
 import { TaskAPIService } from './core/services/api/taskAPI.service';
 import { BoardAPIService } from './core/services/api/boardAPI.service';
-import { UserService } from './core/services/user.service';
-import { TaskService } from './core/services/task.service';
+import { UserStoreService } from './core/services/userStore.service';
+import { TaskStoreService } from './core/services/taskStore.service';
 
 @NgModule({
   declarations: [
@@ -55,8 +55,8 @@ import { TaskService } from './core/services/task.service';
     UserAPIService, 
     TaskAPIService,
     BoardAPIService,
-    UserService, 
-    TaskService
+    UserStoreService, 
+    TaskStoreService
   ],
   bootstrap: [AppComponent]
 })

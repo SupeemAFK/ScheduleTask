@@ -48,13 +48,25 @@ __decorate([
     __metadata("design:type", String)
 ], Task.prototype, "details", void 0);
 __decorate([
+    (0, graphql_1.Field)(type => [String]),
+    __metadata("design:type", Array)
+], Task.prototype, "attachments", void 0);
+__decorate([
     (0, graphql_1.Field)(type => [TaskLink]),
     __metadata("design:type", Array)
 ], Task.prototype, "links", void 0);
 __decorate([
     (0, graphql_1.Field)(type => Date),
     __metadata("design:type", Date)
-], Task.prototype, "deadline", void 0);
+], Task.prototype, "start", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => Date),
+    __metadata("design:type", Date)
+], Task.prototype, "end", void 0);
+__decorate([
+    (0, graphql_1.Field)(type => Boolean),
+    __metadata("design:type", Boolean)
+], Task.prototype, "allDay", void 0);
 __decorate([
     (0, graphql_1.Field)(type => Boolean),
     __metadata("design:type", Boolean)

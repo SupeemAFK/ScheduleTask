@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { UserService } from '../../services/user.service'; 
+import { UserStoreService } from '../../services/userStore.service'; 
 import { Board } from '../../models/board.model';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroTrash, heroPencilSquare } from '@ng-icons/heroicons/outline';
@@ -21,7 +21,7 @@ export class SidebarComponent {
   isOpenEditBoard = false;
   deleteBoardModal = { id: 0, open: false }
 
-  constructor (public userService: UserService) {}
+  constructor (public userService: UserStoreService) {}
 
   setOpenAndClose(): void {
     this.sidebarOpen = !this.sidebarOpen;
@@ -71,6 +71,7 @@ export class SidebarComponent {
       this.userService.createCurrentUserBoard({
         title: this.createBoardInput.title,
         details: this.createBoardInput.details,
+        attachments: []
       })
       this.createBoardInput =  { title: "", details: "" };
       this.isOpenCreateBoard = false;
@@ -81,7 +82,8 @@ export class SidebarComponent {
     this.userService.updateCurrentUserBoard({
       id: this.updateBoardInput.id,
       title: this.updateBoardInput.title,
-      details: this.updateBoardInput.details
+      details: this.updateBoardInput.details,
+      attachments: []
     })
     this.updateBoardInput = { id: 0, title: "", details: "" };
     this.isOpenEditBoard = false;

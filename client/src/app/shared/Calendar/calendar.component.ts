@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import { Task } from 'src/app/core/models/task.model';
+import { TaskStoreService } from '../../core/services/taskStore.service'
 
 @Component({
   imports: [FullCalendarModule],
@@ -21,6 +22,7 @@ export class CalendarComponent implements OnChanges {
       listPlugin,
     ],
     initialView: 'dayGridMonth',
+    eventStartEditable: false,
     weekends: true,
     editable: true,
     selectable: true,
@@ -34,11 +36,16 @@ export class CalendarComponent implements OnChanges {
   @Input() tasks: Task[] = []
   @Input() taskSidebarOpen = false;
   @Output() taskSidebarOpenEvent = new EventEmitter<boolean>();
-  @Output() dateSelectInfoOutput = new EventEmitter<Date>();
   @ViewChild('calendar') calendarComponent: FullCalendarComponent = {} as FullCalendarComponent;
+  constructor (private taskStore: TaskStoreService) {}
 
   ngOnChanges() {
-    this.calendarOptions.events = this.tasks.map(task => ({ id: String(task.id), title: task.title, start: task.deadline }))
+    this.calendarOptions.events = this.tasks.map(task => ({ 
+      id: String(task.id), 
+      title: task.title, 
+      start: new Date(task.start).setHours(task.start.getHours() + 1), 
+      end: new Date(task.end).setHours(task.end.getHours() + 1), 
+    }))
     if (this.taskSidebarOpen || !this.taskSidebarOpen) {
       setTimeout(() => {
         let calendarApi = this.calendarComponent.getApi();
@@ -48,17 +55,13 @@ export class CalendarComponent implements OnChanges {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
+    this.taskStore.selectedDate.set(selectInfo.start);
     this.taskSidebarOpenEvent.emit(true);
-    this.dateSelectInfoOutput.emit(selectInfo.start);
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    /*
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }*/
     if (clickInfo.event.start) {
-      this.dateSelectInfoOutput.emit(clickInfo.event.start);
+      this.taskStore.selectedDate.set(new Date(clickInfo.event.start.setHours(0, 0, 0, 0)));
       this.taskSidebarOpenEvent.emit(true);
     }
   }

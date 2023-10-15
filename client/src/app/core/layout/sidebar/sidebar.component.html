@@ -1,7 +1,10 @@
 <div [class]='sidebarOpen ? "left-0 visible z-10 bg-neutral-800 text-white fixed h-full p-2 w-64 transition-all duration-300" : "left-[-17%] invisible z-10 bg-neutral-800 text-white fixed h-full p-2 w-64 transition-all duration-300"'>
     <div>
-        <div class="flex items-center justify-between">
-            <button (click)="openCreateBoard()" class="w-full mr-2 border-[0.01rem] border-[#f7f7f7] p-2 rounded-md transition-all hover:bg-zinc-500">New Board+</button>
+        <div class="flex items-center">
+            <button *ngIf="userService.currentUser; else elseBlock;" (click)="openCreateBoard()" class="w-full mr-2 border-[0.01rem] border-[#f7f7f7] p-2 rounded-md transition-all hover:bg-zinc-500">New Board+</button>
+            <ng-template #elseBlock>
+                <p class="w-full mr-2 border-[0.01rem] border-[#f7f7f7] p-2 rounded-md text-center">Sign in to create new board</p>
+            </ng-template>
         </div>
         <div class="py-5">
             <div [routerLink]="['/board', board.id]" class="flex justify-between items-center p-3 transition-all hover:bg-zinc-500 cursor-pointer rounded-md" *ngFor="let board of userService.currentUser?.boards">
