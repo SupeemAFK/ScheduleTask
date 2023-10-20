@@ -127,13 +127,7 @@ export class TaskSidebarComponent {
     }
 
     onChangeAttachments(e: any) {
-         //1048576 = 1Mb
-         if(Array.from(e.target.files).every((file: any) => file.size <= 1048576)){
-            this.createTaskInput = { ...this.createTaskInput, attachments: Array.from(e.target.files) }
-        }
-        else {
-            alert("File is too big! over 1 Mb");
-        }
+        this.createTaskInput = { ...this.createTaskInput, attachments: Array.from(e.target.files) }
     }   
 
     changeFileToNone() {

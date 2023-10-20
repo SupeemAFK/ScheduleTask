@@ -44,9 +44,15 @@ export class UserAPIService {
                     email: "${createUserData.email}", 
                     avatar: "${createUserData.avatar}" 
                 }) {
+                    id
                     username
                     email
                     avatar
+                    boards {
+                        id
+                        title
+                        details
+                    }
                 }
           }`;
 

@@ -109,14 +109,8 @@ export class SidebarTaskCardComponent implements OnChanges {
     }
 
     onChangeAttachments(e: any) {
-        //1048576 = 1Mb
-        if(Array.from(e.target.files).every((file: any) => file.size <= 1048576)){
-            const newAttachments: File[] = Array.from(e.target.files);
-            this.updateTaskInput = { ...this.updateTaskInput, attachments: [...this.updateTaskInput.attachments, ...newAttachments] }
-        }
-        else {
-            alert("File is too big! over 1 Mb");
-        }
+        const newAttachments: File[] = Array.from(e.target.files);
+        this.updateTaskInput = { ...this.updateTaskInput, attachments: [...this.updateTaskInput.attachments, ...newAttachments] }
     }
 
     changeFileToNone() {
