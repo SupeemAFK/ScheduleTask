@@ -36,7 +36,8 @@ let UsersService = exports.UsersService = class UsersService {
                     email: createUserDto.email,
                     password: createUserDto.password,
                     avatar: createUserDto.avatar
-                }
+                },
+                include: { boards: true }
             });
         }
         return this.prisma.user.create({
@@ -44,7 +45,8 @@ let UsersService = exports.UsersService = class UsersService {
                 username: createUserDto.username,
                 email: createUserDto.email,
                 avatar: createUserDto.avatar
-            }
+            },
+            include: { boards: true }
         });
     }
     updateUser(updateUserDto) {

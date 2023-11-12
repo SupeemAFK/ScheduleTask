@@ -1,4 +1,4 @@
-<div [class]='sidebarOpen ? "left-0 visible z-10 bg-neutral-800 text-white fixed h-full p-2 w-64 transition-all duration-300" : "left-[-17%] invisible z-10 bg-neutral-800 text-white fixed h-full p-2 w-64 transition-all duration-300"'>
+<div [class]='sidebarOpen ? "left-0 visible z-20 bg-neutral-800 text-white fixed h-full p-2 xl:w-64 w-full transition-all duration-300" : "left-[-100%] invisible z-10 bg-neutral-800 text-white fixed h-full p-2 xl:w-64 w-full transition-all duration-300"'>
     <div>
         <div class="flex items-center">
             <button *ngIf="userService.currentUser; else elseBlock;" (click)="openCreateBoard()" class="w-full mr-2 border-[0.01rem] border-[#f7f7f7] p-2 rounded-md transition-all hover:bg-zinc-500">New Board+</button>
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div [class]='sidebarOpen ? "visible ml-64 fixed top-1/2 left-0 transition-all duration-300" : "visible ml-0 fixed top-1/2 left-0 transition-all duration-300"'>
+    <div [class]='sidebarOpen ? "visible ml-64 fixed top-1/2 xl:left-0 right-0 transition-all duration-300" : "visible ml-0 fixed top-1/2 left-0 transition-all duration-300"'>
         <button (click)="setOpenAndClose()" class="mt-10 bg-white rounded-[50%] w-10 h-10 text-black">{{ sidebarOpen ? "<" : ">" }}</button>
     </div>
 </div>

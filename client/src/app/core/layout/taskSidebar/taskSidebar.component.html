@@ -1,4 +1,4 @@
-<div [class]='taskSidebarOpen ? "right-0 visible bg-neutral-800 fixed top-0 h-full mt-14 w-80 p-3 transition-all duration-300" : "right-[-21%] invisible bg-neutral-700 fixed top-0 h-full mt-14 w-80 p-3 transition-all duration-300"'>
+<div [class]='taskSidebarOpen ? "right-0 z-20 visible bg-neutral-800 fixed top-0 h-full mt-14 xl:w-80 w-full p-3 transition-all duration-300" : "right-[-100%] z-10 invisible bg-neutral-700 fixed top-0 h-full mt-14 xl:w-80 w-full p-3 transition-all duration-300"'>
     <div class="overflow-y-auto h-full">
         <div>
             <h1 class="text-2xl font-semibold text-white"><span class="text-pink-400" *ngIf="taskService.isSelectedDateToday()">Today</span> {{ taskService.selectedDateFormat() }}</h1>
@@ -18,13 +18,13 @@
         </div>
         <div class="mt-16"></div>
     </div>
-    <div [class]='taskSidebarOpen ? "visible mr-80 fixed top-1/2 right-0 transition-all duration-300" : "visible mr-0 fixed top-1/2 right-0 transition-all duration-300"'>
+    <div [class]='taskSidebarOpen ? "visible mr-80 fixed top-1/2 left-0 xl:right-0 transition-all duration-300" : "visible mr-0 fixed top-1/2 right-0 transition-all duration-300"'>
         <button (click)="setOpenAndClose()" class="mt-10 w-10 h-10 text-black bg-white rounded-[50%]">{{ taskSidebarOpen ? ">" : "<" }}</button>
     </div>
 </div>
 <div class="fixed w-full h-full z-50" *ngIf="isOpenCreateTask">
     <div (click)="closeCreateTaskBackground($event)" class="flex justify-center items-center w-full h-full z-50">
-        <div class="bg-neutral-800 p-5 relative flex flex-col w-96 rounded-md h-[36rem] overflow-y-auto">
+        <div class="bg-neutral-800 border-[0.1rem] border-[#e6e6e6] p-5 relative flex flex-col w-96 rounded-md h-[36rem] overflow-y-auto shadow-md">
             <button (click)="closeCreateTask()" class="fixed top-0 right-0 w-5 h-5 flex justify-center items-center text-xs bg-white text-black rounded-[50%]">X</button>
             <h1 class="text-white text-lg">Create task</h1>
             <input [value]="createTaskInput.title" (change)="onChangeInput($event)" name="title" type="text" placeholder="title" class="mt-2 p-3 rounded-md w-full" />

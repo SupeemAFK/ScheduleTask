@@ -12,11 +12,16 @@ import { BoardAPIService } from 'src/app/core/services/api/boardAPI.service';
 })
 export class HomeComponent implements OnInit {
   boards: Board[] = [];
+  getBoardsLoading = false;
   constructor (private boardAPIService: BoardAPIService) {}
 
   ngOnInit() {
+    this.getBoardsLoading = true;
     this.boardAPIService.getBoards().subscribe((data: any) => {
-      if (data?.data?.getBoards) this.boards = data.data.getBoards 
+      if (data?.data?.getBoards) {
+        this.boards = data.data.getBoards;
+        this.getBoardsLoading = false;
+      }
     })
   }
 }

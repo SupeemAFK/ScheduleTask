@@ -10,6 +10,7 @@ import { BoardAPIService } from 'src/app/core/services/api/boardAPI.service';
 import { TaskAPIService } from 'src/app/core/services/api/taskAPI.service';
 import { TaskStoreService } from 'src/app/core/services/taskStore.service';
 import { UserStoreService } from 'src/app/core/services/userStore.service';
+import { Board } from "../../core/models/board.model";
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { bootstrapDownload } from '@ng-icons/bootstrap-icons'
 import { heroDocumentDuplicate, heroArrowLongDown, heroArrowLongUp, heroFolderPlus } from '@ng-icons/heroicons/outline';
@@ -42,6 +43,7 @@ export class BoardComponent implements OnInit {
   showAllTasks = false;
   openAddAttachments = false;
   currentDate = moment(new Date()).format('MMMM Do YYYY');
+  getBoardLoading = false;
   copyBoardLoading = false;
   addBoardAttachmentsLoading = false;
   private storage: Storage = inject(Storage);
@@ -50,6 +52,7 @@ export class BoardComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = Number(params['id']);
       if (id) {
+        this.getBoardLoading = true;
         this.boardAPIService.getBoard(id).subscribe(async (data: any) => {
           if (data?.data?.getBoard) {
             const board = data.data.getBoard;
@@ -75,8 +78,17 @@ export class BoardComponent implements OnInit {
 
             this.taskService.board = { ...board, attachments }; //Set board
             this.taskService.tasks.set(tasks); //Set task of fetched board
+            this.getBoardLoading = false;
+          }
+          else {
+            this.getBoardLoading = false;
           }
         })
+      }
+      else {
+        this.taskService.board = {} as Board; //Set board
+        this.taskService.tasks.set([]); //Set task of fetched board
+        this.getBoardLoading = false;
       }
     });
   }
@@ -112,7 +124,7 @@ export class BoardComponent implements OnInit {
   async addAttachments() {
     if (this.taskService.board.id && this.attachmentsInput.length > 0) {
       this.addBoardAttachmentsLoading = true;
-      const newAttachments = await Promise.all(this.attachmentsInput.map(async attachment => {
+      const newAttachments: { name: string, download_url: string }[]  = await Promise.all(this.attachmentsInput.map(async attachment => {
         const storageRef = ref(this.storage, attachment.name);
         const data = await uploadBytesResumable(storageRef, attachment);
         const download_url = await getDownloadURL(data.ref); 

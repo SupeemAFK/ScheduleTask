@@ -16,7 +16,9 @@ export declare class UsersResolver {
     getUserByEmail(email: string): Promise<import("@prisma/client").User & {
         boards: import("@prisma/client").Board[];
     }>;
-    createUser(createUserDto: CreateUserDto): Promise<import("@prisma/client").User>;
+    createUser(createUserDto: CreateUserDto): Promise<import("@prisma/client").User & {
+        boards: import("@prisma/client").Board[];
+    }>;
     updateUser(updateUserDto: UpdateUserDto): Promise<import("@prisma/client").User & {
         boards: import("@prisma/client").Board[];
     }>;
