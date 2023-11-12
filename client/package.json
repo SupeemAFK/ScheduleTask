@@ -2,6 +2,8 @@
   "name": "todo-app",
   "version": "0.0.0",
   "scripts": {
+    "config": "node src/environments/set-env.js",
+    "vercel-build": "npm run config && npm run build:ssr",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
