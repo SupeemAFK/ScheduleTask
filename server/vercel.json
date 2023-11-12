@@ -8,6 +8,6 @@
     ],
     "routes": [
       { "handle": "filesystem" },
-      { "src": "/(.*)", "dest": "/dist/main.ts" }
+      { "src": "/(.*)", "dest": "/dist/main.ts", "methods": ["GET", "POST", "PUT", "DELETE"] }
     ]
 }
