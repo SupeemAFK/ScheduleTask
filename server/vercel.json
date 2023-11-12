@@ -1,5 +1,9 @@
 {
     "version": 2,
+    "env": {
+        "DATABASE_URL": "@schedule_task_database_url",
+        "POSTGRES_URL_NON_POOLING": "@schedule_task_database_url_non_pooling"
+    },
     "builds": [
         {
             "src": "src/main.ts",
