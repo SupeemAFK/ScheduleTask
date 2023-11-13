@@ -2,11 +2,11 @@
   "name": "todo-app",
   "version": "0.0.0",
   "scripts": {
-    "config": "node src/environments/set-env.js",
-    "vercel-build": "npm run config && npm run build:ssr",
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "config": "node ./scripts/setenv.js",
+    "start": "npm run config -- --environment=dev && ng serve",
+    "vercel-build": "npm run config -- --environment=prod && ng build",
+    "build": "npm run config -- --environment=prod && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -44,6 +44,7 @@
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
     "autoprefixer": "^10.4.14",
+    "dotenv": "^16.3.1",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -52,6 +53,7 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
-    "typescript": "~5.0.2"
+    "typescript": "~5.0.2",
+    "yargs": "^17.7.2"
   }
 }

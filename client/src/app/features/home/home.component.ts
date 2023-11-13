@@ -20,8 +20,8 @@ export class HomeComponent implements OnInit {
     this.boardAPIService.getBoards().subscribe((data: any) => {
       if (data?.data?.getBoards) {
         this.boards = data.data.getBoards;
-        this.getBoardsLoading = false;
       }
+      this.getBoardsLoading = false;
     })
   }
 }
