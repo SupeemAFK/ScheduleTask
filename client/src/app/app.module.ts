@@ -1,5 +1,5 @@
 //environments
-import { environment } from '../environments/environment.development';
+import { environment } from '../environments/environment';
 
 //Modules
 import { NgModule } from '@angular/core';
